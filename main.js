@@ -1,18 +1,9 @@
 $(document).ready(initializeApp);
 
-var firstClickFlag = false;
 
-
-function initializeApp(){
-    createBoard();
-    repopulateChecker()
-    applyHandlers();
-}
-
-function applyHandlers(){
-    $('.square').on('click', movePiece);
-}
-
+var selectedChecker = null;
+var currentRow = null;
+var currentColumn = null; 
 var gameboard = [
     [0,1,0,1,0,1,0,1],
     [1,0,1,0,1,0,1,0],
@@ -23,6 +14,18 @@ var gameboard = [
     [0,2,0,2,0,2,0,2],
     [2,0,2,0,2,0,2,0],
   ];
+
+function initializeApp(){
+    createBoard();
+    repopulateChecker();
+    applyHandlers();
+}
+
+function applyHandlers(){
+    $('.square').on('click', selectPiece);
+}
+
+
 
   function createBoard(){
     var gameBoard = $('#gameArea');
@@ -68,7 +71,6 @@ var gameboard = [
             alternateColor = 1 - alternateColor;
             row.append(square);
            }
-       
         }
         // alternateColor = 1 - alternateColor;
         gameBoard.append(row);
@@ -76,15 +78,6 @@ var gameboard = [
     alternateColor = 1 - alternateColor;
   } }
 
-
-
-// Click handler
-
-// determine which players turn
-
-// current position, row/column
-
-// take the current piece, determine position, 
 
 function repopulateChecker(){
     var gameBoard = $('#gameArea');
@@ -103,13 +96,6 @@ function repopulateChecker(){
     }
 }
 
-// function getLocation(){
-//     var row = $(this).attr('row');
-//     var column = $(this).attr('col');
-//     console.log('Row: ', row);
-//     console.log('Column: ', col);
-// }
-
 function movePiece(){
     var row = parseInt($(this).attr('row'));
     var column = parseInt($(this).attr('col'));
@@ -121,4 +107,15 @@ function movePiece(){
     var possibleMoveRight = gameboard[row+1][column+1];
 
    
+}
+
+function selectPiece(){
+    if(!selectedChecker){
+        currentRow = parseInt($(this).attr('row'));
+        currentColumn = parseInt($(this).attr('col'));
+        selectedChecker = gameboard[currentRow][currentColumn];
+        console.log(selectedChecker);
+    } else {
+
+    }
 }
