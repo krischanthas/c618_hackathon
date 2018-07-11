@@ -1,11 +1,17 @@
 $(document).ready(initializeApp);
 
+var firstClickFlag = false;
+
+
 function initializeApp(){
     createBoard();
     repopulateChecker()
-    // applyHandlers();
+    applyHandlers();
 }
 
+function applyHandlers(){
+    $('.square').on('click', movePiece);
+}
 
 var gameboard = [
     [0,1,0,1,0,1,0,1],
@@ -97,9 +103,22 @@ function repopulateChecker(){
     }
 }
 
-function getLocation(){
-    var row = $(this).attr('row');
-    var column = $(this).attr('col');
+// function getLocation(){
+//     var row = $(this).attr('row');
+//     var column = $(this).attr('col');
+//     console.log('Row: ', row);
+//     console.log('Column: ', col);
+// }
+
+function movePiece(){
+    var row = parseInt($(this).attr('row'));
+    var column = parseInt($(this).attr('col'));
     console.log('Row: ', row);
-    console.log('Column: ', col);
+    console.log('Column: ', column);
+
+    var checkerSelected = gameboard[row][column];
+    var possibleMoveLeft = gameboard[row +1][column -1];
+    var possibleMoveRight = gameboard[row+1][column+1];
+
+   
 }
