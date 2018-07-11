@@ -17,7 +17,6 @@ var gameboard = [
   ];
 
   function createBoard(){
-    // var boardSize = { rows: 8, squares: 8 };
     var gameBoard = $('#gameArea');
     var alternateColor = 0;
     for ( var i = 0; i < gameboard.length; i++) {
@@ -25,6 +24,7 @@ var gameboard = [
         for( var j = 0; j < gameboard.length; j++) {
            if(alternateColor) {
             var square = $('<div>').addClass('square dark');
+            var checker = $('<div>').addClass('checker');
             alternateColor = 1 - alternateColor;
             row.append(square);
            } else {
