@@ -99,15 +99,22 @@ border: 1px solid black;
 
 }
 
-.sqaure.light {
-background-color: brown;
-
-
+.light {
+background-color: beige;
 }
 
 
-.square.dark {
-background-color: lightpink;
+.dark {
+background-color: saddlebrown;
+}
 
+.checker {
+    width: 20px;
+    height: 20px;
+    background-color: black;
+    position: relative;
+}
 
+.player1{
+    background-color: red;
 }
