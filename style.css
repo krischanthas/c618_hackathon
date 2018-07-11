@@ -40,14 +40,17 @@ h1 {
 }
 
 button {
-    width: 50%;
+    width: 45%;
     height: 8%;
     position: relative;
+    display: inline-block;
     top: 5%;
-    left: 25%;
+    left: 4%;
     background-color: lawngreen;
     font-size: 1rem;
 }
+
+
 
 .discardPile {
     width:70%;

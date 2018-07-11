@@ -2,6 +2,7 @@ $(document).ready(initializeApp);
 
 function initializeApp(){
     createBoard();
+    resetBoard();
     repopulateChecker()
     // applyHandlers();
 }
@@ -69,6 +70,15 @@ var gameboard = [
     } 
     alternateColor = 1 - alternateColor;
   } }
+
+
+    function resetBoard() {
+      $('.resetGameBttn').click(boardReset);
+    }
+
+    function boardReset() {
+      $('#gameArea').reset();
+    }
 
 
 
