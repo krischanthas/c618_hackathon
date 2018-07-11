@@ -116,9 +116,12 @@ background-color: saddlebrown;
 }
 
 .checker {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     background-color: black;
+    border-radius: 20px;
+    margin-top: 30%;
+    margin-left: 30%;
     position: relative;
 }
 
