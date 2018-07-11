@@ -8,7 +8,7 @@ body {
     width: 100vw;
     height: 100vh;
     border: 1px black solid;
-
+    position: absolute;
 }
 
 h1 {
@@ -66,37 +66,41 @@ button {
     height: 100%;
     border: 2px black solid;
     display: inline-block;
-
+    position: relative;
 }
 .gameBoarder {
     width: 50%;
     height: 85%;
     position: relative;
-    display: inline-block;
+    /*display: inline-block;*/
     border: 1px green dotted;
     left: 50%;
     top:50%;
     transform: translate( -50%, -50%);
-
 }
 
-.gameArea{
-    width: 90%;
-    height: 90%;
-    border: 1px red solid;
+#gameArea{
+    width: 100%;
+    height: 100%;
     position: relative;
+    border: 1px blue dotted;
     left: 50%;
     top: 50%;
     transform:translate(-50%,-50%);
+    padding-top: 5%;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
 
 }
 
 .square {
 display: inline-block;
-width: 90px;
-height: 80px;
+width: 60px;
+height: 60px;
 border: 1px solid black;
-
 }
 
 .sqaure.light {
