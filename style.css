@@ -125,3 +125,7 @@ background-color: saddlebrown;
 .player1{
     background-color: red;
 }
+
+.highLight {
+    border: 2px yellow solid;
+}

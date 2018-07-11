@@ -4,6 +4,8 @@ $(document).ready(initializeApp);
 var selectedChecker = null;
 var currentRow = null;
 var currentColumn = null; 
+var possibleRow = null;
+var possibleColumn = null;
 var gameboard = [
     [0,1,0,1,0,1,0,1],
     [1,0,1,0,1,0,1,0],
@@ -110,12 +112,31 @@ function movePiece(){
 }
 
 function selectPiece(){
+    debugger;
     if(!selectedChecker){
+        console.log(this);
+      
+            currentRow = parseInt($(this).attr('row'));
+            currentColumn = parseInt($(this).attr('col'));
+            possibleRow = currentRow + 1;
+            possibleMoveLeft = currentColumn -1;
+            possibleMoveRight = currentColumn + 1;
+            $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
+            $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
+
+
+        
         currentRow = parseInt($(this).attr('row'));
         currentColumn = parseInt($(this).attr('col'));
         selectedChecker = gameboard[currentRow][currentColumn];
-        console.log(selectedChecker);
     } else {
 
+        selectedChecker = null;
+        var moveToRow = parseInt($(this).attr('row'));
+        var moveToColumn = parseInt($(this).attr('col'));
+        gameboard[moveToRow][moveToColumn] = 1;
+        gameboard[currentRow][currentColumn]= 0;
+        $('.square').empty();
+        repopulateChecker();
     }
 }
