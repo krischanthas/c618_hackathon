@@ -3,9 +3,12 @@ $(document).ready(initializeApp);
 function initializeApp(){
     createBoard();
     repopulateChecker()
-    // applyHandlers();
+    applyHandlers();
 }
 
+function applyHandlers() {
+    $('.resetButton').on('click', resetGame);
+}
 
 var gameboard = [
     [0,1,0,1,0,1,0,1],
@@ -102,4 +105,18 @@ function getLocation(){
     var column = $(this).attr('col');
     console.log('Row: ', row);
     console.log('Column: ', col);
+}
+
+function resetGame() {
+    gameboard = [
+        [0,1,0,1,0,1,0,1],
+        [1,0,1,0,1,0,1,0],
+        [0,1,0,1,0,1,0,1],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [2,0,2,0,2,0,2,0],
+        [0,2,0,2,0,2,0,2],
+        [2,0,2,0,2,0,2,0],
+      ];
+      repopulateChecker();
 }
