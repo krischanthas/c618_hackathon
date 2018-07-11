@@ -91,3 +91,23 @@ button {
 
 }
 
+.square {
+display: inline-block;
+width: 90px;
+height: 80px;
+border: 1px solid black;
+
+}
+
+.sqaure.light {
+background-color: brown;
+
+
+}
+
+
+.square.dark {
+background-color: lightpink;
+
+
+}
