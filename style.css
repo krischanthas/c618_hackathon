@@ -1,0 +1,22 @@
+.gameArea {
+    width: 500px;
+    height: 500px;
+    border: 1px solid black;
+    position: relative;
+    
+  }
+  .white {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    position: relative;
+    float: left;
+
+  }
+  .black {
+    width: 30px;
+    height: 30px;
+    background-color: black;
+    position: relative;
+    float: left;
+  }
