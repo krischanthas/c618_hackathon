@@ -13,7 +13,9 @@ function createBoard(){
       for( var nestedIndex = 0; nestedIndex < boardSize.squares; nestedIndex++) {
          if(alternateColor) {
           var square = $('<div>').addClass('square dark');
+          var checker = $('<div>').addClass('checker');
           alternateColor = 1 - alternateColor;
+          square.append( checker );
           row.append(square);
          } else {
           var square = $('<div>').addClass('square light');
