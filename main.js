@@ -20,44 +20,44 @@ var gameboard = [
     debugger;
     var gameBoard = $('#gameArea');
     var alternateColor = 0;
-    for ( var i = 0; i < gameboard.length; i++) {
+    for ( var i = 1; i < gameboard.length + 1; i++) {
        var row = $('<div>').addClass('row');
-        for( var j = 0; j < gameboard.length; j++) {
-          if( i < 3) {
+        for( var j = 1; j < gameboard.length + 1; j++) {
+          if( i < 4) {
             if(alternateColor) {
-              var square = $('<div>').addClass('square dark');
+              var square = $('<div>').addClass('square dark').attr('row' , i).attr("col", j) ;
               var checker = $('<div>').addClass('checker player1');
               alternateColor = 1 - alternateColor;
               square.append( checker);
               row.append(square);
              } else {
-              var square = $('<div>').addClass('square light');
+              var square = $('<div>').addClass('square light').attr('row' , i).attr("col", j) ;
               alternateColor = 1 - alternateColor;
               row.append(square);
              }
 
           }
-          if ( i>=3 && i <=4) {
+          if ( i>=4 && i <=5) {
             if(alternateColor) {
-              var square = $('<div>').addClass('square dark');
+              var square = $('<div>').addClass('square dark').attr('row' , i).attr("col", j) ;
               alternateColor = 1 - alternateColor;
               row.append(square);
              } else {
-              var square = $('<div>').addClass('square light');
+              var square = $('<div>').addClass('square light').attr('row' , i).attr("col", j) ;
               alternateColor = 1 - alternateColor;
               row.append(square);
              }
 
-          } else if (i > 4) {
+          } else if (i > 5) {
           
            if(alternateColor) {
-            var square = $('<div>').addClass('square dark');
+            var square = $('<div>').addClass('square dark').attr('row' , i).attr("col", j) ;
             var checker = $('<div>').addClass('checker player2');
             alternateColor = 1 - alternateColor;
             square.append( checker);
             row.append(square);
            } else {
-            var square = $('<div>').addClass('square light');
+            var square = $('<div>').addClass('square light').attr('row' , i).attr("col", j) ;
             alternateColor = 1 - alternateColor;
             row.append(square);
            }
