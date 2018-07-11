@@ -2,6 +2,7 @@ $(document).ready(initializeApp);
 
 function initializeApp(){
     createBoard();
+    resetBoard();
 }
 
 
@@ -68,6 +69,15 @@ var gameboard = [
     } 
     alternateColor = 1 - alternateColor;
   } }
+
+
+    function resetBoard() {
+      $('.resetGameBttn').click(boardReset);
+    }
+
+    function boardReset() {
+      $('#gameArea').reset();
+    }
 
 // function createBoard(){
 //   var boardSize = { rows: 8, squares: 8 };
