@@ -226,9 +226,15 @@ function selectPiece(){
                 jumpLeft = true;
                 }
 
+            // if one of the possible move doesn't exist
+            if(gameBoard[possibleRow][possibleMoveLeft] === undefined){
+                $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
+            }
+            else if( gameBoard[possibleRow][possibleMoveRight] === undefined){
+                $(`div[row= ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
+            }
             //if both available moves are do not contain an opponents piece then add the class of highlight to both divs
-
-            if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === 0  ) {
+            else if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === 0  ) {
                 $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
                 $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
             } 
@@ -244,6 +250,13 @@ function selectPiece(){
             possibleJumpLeft = currentColumn - 2;
             possibleJumpRight = currentColumn + 2;
 
+            // if you a possible move left or right is not possible, only highlight available move
+            if(gameBoard[possibleRow][possibleMoveLeft] === undefined){
+                $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
+            }
+            else if( gameBoard[possibleRow][possibleMoveRight] === undefined){
+                $(`div[row= ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
+            }
             // if the gameBoard array numeric value of the div on the left is 0 (empty) and the value of the div on the right is 2 (opponents piece) 
 
             if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === 1) {
@@ -262,6 +275,7 @@ function selectPiece(){
                 if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === 0  ) {
                     $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
                     $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
+                    
                 } 
                 selectedChecker = gameBoard[currentRow][currentColumn];
         }
@@ -339,3 +353,5 @@ function removeHighlights(){
             $(`div[row = ${possibleJumpRow}][col = ${possibleJumpLeft}]`).removeClass("highLight");
             $(`div[row = ${possibleJumpRow}][col = ${possibleJumpRight}]`).removeClass("highLight");
 }
+
+
