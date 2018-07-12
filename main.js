@@ -13,6 +13,11 @@ function applyHandlers(){
 }
 
 var selectedChecker = null;
+var jumpRight = false;
+var jumpLeft = false;
+var possibleJumpRow = null;
+var possibleJumpLeft = null;
+var possibleJumpRight = null;
 var currentRow = null;
 var currentColumn = null; 
 var possibleRow = null;
@@ -22,7 +27,7 @@ var gameBoard = [
     [0,1,0,1,0,1,0,1],
     [1,0,1,0,1,0,1,0],
     [0,1,0,1,0,1,0,1],
-    [0,0,0,0,0,0,0,0],
+    [0,0,2,0,0,0,0,0],
     [0,0,0,0,0,0,0,0],
     [2,0,2,0,2,0,2,0],
     [0,2,0,2,0,2,0,2],
@@ -110,6 +115,7 @@ function resetGame() {
 }
 
 function selectPiece(){
+    debugger;
     // has a div has not been clicked
     if(!selectedChecker){
         console.log(this);
@@ -121,17 +127,66 @@ function selectPiece(){
         if (currentPlayer) {
             // check the possible movements of the piece
             possibleRow = currentRow + 1;
-            possibleMoveLeft = currentColumn + 1;
-            possibleMoveRight = currentColumn - 1; 
+            possibleMoveLeft = currentColumn - 1;
+            possibleMoveRight = currentColumn + 1; 
+            possibleJumpRow = currentRow + 2;
+            possibleJumpLeft = currentColumn - 2;
+            possibleJumpRight = currentColumn + 2;
+                //jQuery target the div with the row and col value equal to the current checkers possible moves and add the class highLight
+            if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === 2) {
+                $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
+                $(`div[row = ${possibleJumpRow}][col = ${possibleJumpRight}]`).addClass("highLight");
+            jumpLeft = true;
+            }
+            if ( gameBoard[possibleRow][possibleMoveRight] === 0 && gameBoard[possibleRow][possibleMoveLeft] === 2) {
+                $(`div[row = ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
+                $(`div[row = ${possibleJumpRow}][col = ${possibleJumpLeft}]`).addClass("highLight");
+                jumpRight = true;
+                }
+            if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === 0  ) {
+                $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
+                $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
+            } 
+          
         } else {
             // check the possible movements of the pieces from player 2's perspective
             possibleRow = currentRow - 1;
             possibleMoveLeft = currentColumn -1;
             possibleMoveRight = currentColumn + 1; 
+            possibleJumpRow = currentRow - 2;
+            possibleJumpLeft = currentColumn - 2;
+            possibleJumpRight = currentColumn + 2;
+            if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === 1) {
+                $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
+                $(`div[row = ${possibleJumpRow}][col = ${possibleJumpRight}]`).addClass("highLight");
+                jumpLeft = true;
+                }
+                if ( gameBoard[possibleRow][possibleMoveRight] === 0 && gameBoard[possibleRow][possibleMoveLeft] === 1) {
+                    $(`div[row = ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
+                    $(`div[row = ${possibleJumpRow}][col = ${possibleJumpLeft}]`).addClass("highLight");
+                    jumpRight = true;
+                    }
+                if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === 0  ) {
+                    $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
+                    $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
+                } 
+                selectedChecker = gameBoard[currentRow][currentColumn];
         }
         //jQuery target the div with the row and col value equal to the current checkers possible moves and add the class highLight
+        if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === 2) {
         $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
-        $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
+        $(`div[row = ${possibleJumpRow}][col = ${possibleJumpRight}]`).addClass("highLight");
+        jumpLeft = true;
+        }
+        if ( gameBoard[possibleRow][possibleMoveRight] === 0 && gameBoard[possibleRow][possibleMoveLeft] === 2) {
+            $(`div[row = ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
+            $(`div[row = ${possibleJumpRow}][col = ${possibleJumpLeft}]`).addClass("highLight");
+            jumpRight = true;
+            }
+        if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === 0  ) {
+            $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
+            $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
+        } 
         selectedChecker = gameBoard[currentRow][currentColumn];
     } else {
         //if the next square clicked has the class of highlight
@@ -141,20 +196,35 @@ function selectPiece(){
             //jQuery target the div with the row and col value equal to the current checkers possible moves and remove the class highLight
             $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).removeClass("highLight");
             $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).removeClass("highLight");
+            $(`div[row = ${possibleJumpRow}][col = ${possibleJumpLeft}]`).removeClass("highLight");
+            $(`div[row = ${possibleJumpRow}][col = ${possibleJumpRight}]`).removeClass("highLight"); 
             //find the numeric value of row attribute the highlighted div clicked
             var moveToRow = parseInt($(this).attr('row'));
             //find the numeric value of col attribute the highlighted div clicked
             var moveToColumn = parseInt($(this).attr('col'));
-            //check which player is doing the action to determine which color checker
+            //check which player is doing the action to determine which color checker to change the array value to repopulate the correct color
                 if(currentPlayer) {
                     gameBoard[moveToRow][moveToColumn] = 1;
                 } else {
                     gameBoard[moveToRow][moveToColumn] = 2;
                 }
+            //remove the checker that is currently selected  
+            if (jumpLeft === true) {
+                gameBoard[possibleRow][possibleMoveLeft]= 0;
+            }  
+            if(jumpRight === true) {
+                gameBoard[possibleRow][possibleMoveRight]= 0;
+            }
+
             gameBoard[currentRow][currentColumn]= 0;
+            //remove all children divs from the divs with the class of square
             $('.square').empty();
+            jumpRight = false;
+            jumpLeft = false;
+            //reloop through the array and create cheakers at the new array values
             repopulateChecker();
         } else {
+            //if the div clicked does not have the class of highLight, remove the highLight class and reset the original checker clicked, then exit function
             $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).removeClass("highLight");
             $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).removeClass("highLight");
             selectedChecker =null;
