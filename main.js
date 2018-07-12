@@ -8,7 +8,7 @@ function initializeApp(){
 
 function applyHandlers(){
     
-    $('.square').on('click',selectPiece); 
+    $('.square').on('click', selectPiece); 
     $('.square.light').off();
     $('.startGame').on('click',  function(){
         if(hasClicked === true){
@@ -167,10 +167,11 @@ function repopulateChecker(){
             }
             console.log(gameBoard);
         }
-        switchPlayer();
+        // switchPlayer();
       
 }
-
+switchPlayer();
+}
 function resetGame() {
 
     // set the gameBoard to the original status
@@ -196,11 +197,7 @@ function resetGame() {
     // reloop through array an assign checkers to original position
 
     repopulateChecker();
-
-    
-    
-
-    
+  
 }
 function getValueAtCoord(y,x){
     if(gameBoard[y]===undefined || gameBoard[y][x]===undefined){
@@ -211,7 +208,7 @@ function getValueAtCoord(y,x){
 }
 
 function selectPiece(){
-
+    debugger;
     // has a div has not been clicked
     //if nothing has been picked, <-----------ask for clarity
     if(!selectedChecker){
@@ -226,7 +223,7 @@ function selectPiece(){
 
         //check who the current player is
              // current player is Player 1 who controls the white checkers
-        if (currentPlayer) {
+        if (!currentPlayer) {
             //If the selected checker is a King, enable forward and backward movement
            
             if(gameBoard[currentRow][currentColumn] === 3) {
@@ -408,7 +405,7 @@ function selectPiece(){
 
             //check which player is doing the action to determine which color checker to change the array value to repopulate the correct color
 
-            if(currentPlayer) {
+            if(!currentPlayer) {
                 if( possibleRow === 7 || possibleJumpRow === 7) {
                     gameBoard[moveToRow][moveToColumn] = 3;
                     //if player 2 and the row moved to is the opponent's side then create a king
