@@ -11,7 +11,7 @@ function applyHandlers(){
     $('.startGame').on('click',  repopulateChecker);
     $('.resetButton').on('click', resetGame);
 }
-
+var gameStarted = false;
 var selectedChecker = null;
 var jumpRight = false;
 var jumpLeft = false;
@@ -97,32 +97,33 @@ function createBoard(){
 
 function repopulateChecker(){
 
-    // loop through the gameBoard array
+        // loop through the gameBoard array
+        
+        for(var i = 0; i < gameBoard.length; i++){
 
-    for(var i = 0; i < gameBoard.length; i++){
+            //loop though easch number in the inner array
 
-        //loop though easch number in the inner array
+            for(var j =0; j < gameBoard.length; j++){
 
-        for(var j =0; j < gameBoard.length; j++){
+                // if the gameBoard value at the outerloop index and innerloop index is a 1 the append a checker with the class of player1
 
-            // if the gameBoard value at the outerloop index and innerloop index is a 1 the append a checker with the class of player1
+                if(gameBoard[i][j]=== 1){
+                    var checker = $('<div>').addClass('checker player1');
 
-            if(gameBoard[i][j]=== 1){
-                var checker = $('<div>').addClass('checker player1');
+                    //jQuery target the div with the row attribute of the outer loop index and col attribute of inner loop index and append the checker
 
-                //jQuery target the div with the row attribute of the outer loop index and col attribute of inner loop index and append the checker
+                    $(`div[row = ${i}][col= ${j}]`).append(checker);
+                }
+                // if the gameBoard value at the outerloop index and innerloop index is a 2 the append a checker with the class of player2
 
-                $(`div[row = ${i}][col= ${j}]`).append(checker);
-            }
-            // if the gameBoard value at the outerloop index and innerloop index is a 2 the append a checker with the class of player2
-
-            else if(gameBoard[i][j]=== 2){
-                var checker = $('<div>').addClass('checker player2');
-                $(`div[row = ${i}][col= ${j}]`).append(checker);
+                else if(gameBoard[i][j]=== 2){
+                    var checker = $('<div>').addClass('checker player2');
+                    $(`div[row = ${i}][col= ${j}]`).append(checker);
+                }
             }
         }
-    }
-    switchPlayer();
+        switchPlayer();
+      
 }
 
 function resetGame() {
@@ -144,13 +145,17 @@ function resetGame() {
 
     $('.square').empty();
 
+    // clear any existing highlights before checkers are repopulated
+    removeHighlights();
+    
     // reloop through array an assign checkers to original position
 
     repopulateChecker();
+
+    
 }
 
 function selectPiece(){
-    debugger;
 
     // has a div has not been clicked
     //if nothing has been picked, <-----------ask for clarity
@@ -251,7 +256,7 @@ function selectPiece(){
         //if the next square clicked has the class of highlight
 
         if($(this).hasClass('highLight')){
-            debugger;
+            
 
             //reset the checker so another checker may be selected
 
@@ -259,10 +264,7 @@ function selectPiece(){
 
             //jQuery target the div with the row and col value equal to the current checkers possible moves and remove the class highLight
 
-            $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).removeClass("highLight");
-            $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).removeClass("highLight");
-            $(`div[row = ${possibleJumpRow}][col = ${possibleJumpLeft}]`).removeClass("highLight");
-            $(`div[row = ${possibleJumpRow}][col = ${possibleJumpRight}]`).removeClass("highLight"); 
+            removeHighlights();
 
             //find the numeric value of row attribute the highlighted div clicked
 
@@ -315,3 +317,9 @@ function selectPiece(){
     }
 }
 
+function removeHighlights(){
+             $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).removeClass("highLight");
+            $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).removeClass("highLight");
+            $(`div[row = ${possibleJumpRow}][col = ${possibleJumpLeft}]`).removeClass("highLight");
+            $(`div[row = ${possibleJumpRow}][col = ${possibleJumpRight}]`).removeClass("highLight");
+}
