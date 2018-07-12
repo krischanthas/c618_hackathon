@@ -177,6 +177,13 @@ function resetGame() {
 
     repopulateChecker();
 }
+function getValueAtCoord(y,x){
+    if(gameBoard[y]===undefined || gameBoard[y][x]===undefined){
+        return false;
+    } 
+    return gameBoard[y][x];
+    
+}
 
 function selectPiece(){
     debugger;
@@ -195,8 +202,10 @@ function selectPiece(){
         currentColumn = parseInt($(currentChecker).attr('col'));
 
         //check who the current player is
-
+             // current player is Player 1 who controls the white checkers
         if (currentPlayer) {
+            //If the selected checker is a King, enable forward and backward movement
+           
             if(gameBoard[currentRow][currentColumn] === 3) {
                 possibleRowKing = currentRow + 1;
                 possibleMoveLeftKing = currentColumn - 1;
@@ -213,8 +222,10 @@ function selectPiece(){
                 possibleReverseJumpRowKing = currentRow - 2;
                 possibleReverseJumpLeftKing = currentColumn - 2;
                 possibleReverseJumpRightKing = currentColumn + 2;
-                
-                if ( gameBoard[possibleRowKing][possibleMoveLeftKing] === 0 && gameBoard[possibleRowKing][possibleMoveRightKing] === 2) {
+                        
+                if ( getValueAtCoord(possibleRowKing, possibleMoveLeftKing) === 0 &&  getValueAtCoord(possibleRowKing,possibleMoveRightKing) === 2) {
+                    //gameBoard[possibleRowKing][possibleMoveLeftKing] === 0
+                    //gameBoard[possibleRowKing][possibleMoveRightKing] === 2
 
                     // highlight the square of the div to the left and the div 2 rows down and 2 columns to the right
     
@@ -226,20 +237,20 @@ function selectPiece(){
                     jumpRight = true; // <-------------------change to king jump
                 }
 
-                if ( gameBoard[possibleReverseRowKing][possibleRverseMoveLeftKing] === 0 && gameBoard[possibleReverseRowKing][possibleReverseMoveRightKing] === 2) {
+                if ( getValueAtCoord(possibleReverseRowKing,possibleRverseMoveLeftKing) === 0 && getValueAtCoord(possibleReverseRowKing,possibleReverseMoveRightKing) === 2) {
                     $(`div[row = ${possibleReverseRowKing}][col = ${possibleReverseMoveLeftKing}]`).addClass("highLight");
                     $(`div[row = ${possibleReverseJumpRowKing}][col = ${possibleReverseJumpRightKing}]`).addClass("highLight");
                     jumpRight = true;
                 }
 
-                if ( gameBoard[possibleReverseRowKing][possibleReverseMoveRightKing] === 0 && gameBoard[possibleReverseRowKing][possiblReverseeMoveLeftKing] === 2) {
+                if ( getValueAtCoord(possibleReverseRowKing,possibleReverseMoveRightKing) === 0 && getValueAtCoord(possibleReverseRowKing,possiblReverseeMoveLeftKing) === 2) {
                     $(`div[row = ${possibleReverseRowKing}][col = ${possibleReverseMoveRightKing}]`).addClass("highLight");
                     $(`div[row = ${possibleReverseJumpRowKing}][col = ${possibleReverseJumpLeftKing}]`).addClass("highLight");
                     jumpLeft = true;
                 }
     
               
-                if ( gameBoard[possibleRowKing][possibleMoveRightKing] === 0 && gameBoard[possibleRowKing][possibleMoveLeftKing] === 2) {
+                if ( getValueAtCoord(possibleRowKing,possibleMoveRightKing) === 0 && getValueAtCoord(possibleRowKing,possibleMoveLeftKing) === 2) {
                 
                     // highlight the square of the div to the right and the div 2 rows down and 2 columns to the left
   
@@ -251,16 +262,18 @@ function selectPiece(){
                   jumpLeft = true;
                 }
 
-                if ( gameBoard[possibleReverseRowKing][possibleReverseMoveLeftKing] === 0 && gameBoard[possibleReverseRowKing][possibleReverseMoveRightKing] === 0  ) {
+                if ( getValueAtCoord(possibleReverseRowKing,possibleReverseMoveLeftKing) === 0 && getValueAtCoord(possibleReverseRowKing,possibleReverseMoveRightKing) === 0  ) {
                     $(`div[row = ${possibleReverseRowKing}][col = ${possibleRverseMoveLeftKing}]`).addClass("highLight");
                     $(`div[row= ${possiblerverseRowKing}][col = ${possiblerverseMoveRightKing}]`).addClass("highLight");
                 } 
               
       
-                if ( gameBoard[possibleRowKing][possibleMoveLeftKing] === 0 && gameBoard[possibleRowKing][possibleMoveRightKing] === 0  ) {
+                if  (getValueAtCoord(possibleRowKing,possibleMoveLeftKing) === 0 && getValueAtCoord(possibleRowKing,possibleMoveRightKing) === 0  ) {
                     $(`div[row = ${possibleRowKing}][col = ${possibleMoveLeftKing}]`).addClass("highLight");
                     $(`div[row= ${possibleRowKing}][col = ${possibleMoveRightKing}]`).addClass("highLight");
                 } 
+                
+            // if the piece is not a king    
             } else {
             // current player is Player 1 who controls the white checkers
 
@@ -272,9 +285,15 @@ function selectPiece(){
             possibleJumpRight = currentColumn + 2;
 
             // if the gameBoard array numeric value of the div on the left is 0 (empty) and the value of the div on the right is 2 (opponents piece) 
-
+            if(gameBoard[possibleRow][possibleMoveLeft] === undefined){
+                $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
+            } else if( gameBoard[possibleRow][possibleMoveRight] === undefined){
+                $(`div[row= ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
+            }
+            
             if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === 2 ||gameBoard[possibleRow][possibleMoveRight] === 4) {
-
+                //the available move is off the board
+              
                 // highlight the square of the div to the left and the div 2 rows down and 2 columns to the right
 
                 $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
