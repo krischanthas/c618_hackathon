@@ -7,8 +7,9 @@ function initializeApp(){
 
 
 function applyHandlers(){
-    $('.square').on('click',selectPiece);
-    $('.square .light').off();
+    $('div .square .light').off();
+    
+    $('.square').on('click',selectPiece); 
     $('.startGame').on('click',  function(){
         if(hasClicked === true){
             return;
@@ -18,10 +19,10 @@ function applyHandlers(){
         }
     });
     $('.resetButton').on('click', function(){
-        hasClicked = false;
-        resetGame();
-        
-    });
+            hasClicked = false;
+            resetGame();
+        });       
+    
 }
 var hasClicked = false;
 var gameStarted = false;
@@ -177,7 +178,6 @@ function selectPiece(){
     //if nothing has been picked, <-----------ask for clarity
     if(!selectedChecker){
         var currentChecker = this;
-        
         //get the numeric value of the div's row attribute that was clicked
 
         currentRow = parseInt($(currentChecker).attr('row'));
@@ -202,12 +202,11 @@ function selectPiece(){
             // if the gameBoard array numeric value of the div on the left is 0 (empty) and the value of the div on the right is 2 (opponents piece) 
 
             if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === 2) {
-
+                
                 // highlight the square of the div to the left and the div 2 rows down and 2 columns to the right
 
                 $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
                 $(`div[row = ${possibleJumpRow}][col = ${possibleJumpRight}]`).addClass("highLight");
-
                 //raise a flag that a jump to the right occurred
 
                 jumpRight = true;
@@ -226,13 +225,7 @@ function selectPiece(){
                 jumpLeft = true;
                 }
 
-            // if one of the possible move doesn't exist
-            if(gameBoard[possibleRow][possibleMoveLeft] === undefined){
-                $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
-            }
-            else if( gameBoard[possibleRow][possibleMoveRight] === undefined){
-                $(`div[row= ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
-            }
+           
             //if both available moves are do not contain an opponents piece then add the class of highlight to both divs
             else if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === 0  ) {
                 $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
@@ -250,13 +243,6 @@ function selectPiece(){
             possibleJumpLeft = currentColumn - 2;
             possibleJumpRight = currentColumn + 2;
 
-            // if you a possible move left or right is not possible, only highlight available move
-            if(gameBoard[possibleRow][possibleMoveLeft] === undefined){
-                $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
-            }
-            else if( gameBoard[possibleRow][possibleMoveRight] === undefined){
-                $(`div[row= ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
-            }
             // if the gameBoard array numeric value of the div on the left is 0 (empty) and the value of the div on the right is 2 (opponents piece) 
 
             if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === 1) {
