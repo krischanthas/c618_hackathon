@@ -1,6 +1,17 @@
 $(document).ready(initializeApp);
 
 
+function initializeApp(){
+    createBoard();
+    repopulateChecker()
+    applyHandlers();
+}
+
+function applyHandlers() {
+    $('.resetButton').on('click', resetGame);
+  
+}
+
 var selectedChecker = null;
 var currentRow = null;
 var currentColumn = null; 
@@ -86,7 +97,8 @@ function applyHandlers(){
         gameBoard.append(row);
     } 
     alternateColor = 1 - alternateColor;
-  } }
+  }
+}
 
 
 function repopulateChecker(){
@@ -109,15 +121,30 @@ function repopulateChecker(){
 function movePiece(){
     var row = parseInt($(this).attr('row'));
     var column = parseInt($(this).attr('col'));
-    console.log('Row: ', row);
-    console.log('Column: ', column);
+}
 
-    var checkerSelected = gameboard[row][column];
-    var possibleMoveLeft = gameboard[row +1][column -1];
-    var possibleMoveRight = gameboard[row+1][column+1];
+function resetGame() {
+    gameboard = [
+        [0,1,0,1,0,1,0,1],
+        [1,0,1,0,1,0,1,0],
+        [0,1,0,1,0,1,0,1],
+        [0,0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0,0],
+        [2,0,2,0,2,0,2,0],
+        [0,2,0,2,0,2,0,2],
+        [2,0,2,0,2,0,2,0],
+      ];
+      repopulateChecker();
+}
 
    
-}
+
+//     var checkerSelected = gameboard[row][column];
+//     var possibleMoveLeft = gameboard[row +1][column -1];
+//     var possibleMoveRight = gameboard[row+1][column+1];
+
+   
+
 
 function selectPiece(){
     
@@ -167,3 +194,4 @@ function selectPiece(){
        
     }
 }
+
