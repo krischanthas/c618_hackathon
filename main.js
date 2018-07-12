@@ -1,15 +1,15 @@
 $(document).ready(initializeApp);
 
-
 function initializeApp(){
     createBoard();
-    repopulateChecker()
     applyHandlers();
 }
 
-function applyHandlers() {
+
+function applyHandlers(){
+    $('.square').on('click', selectPiece);
+    $('.startGame').on('click',  repopulateChecker);
     $('.resetButton').on('click', resetGame);
-  
 }
 
 var selectedChecker = null;
@@ -29,11 +29,6 @@ var gameboard = [
     [2,0,2,0,2,0,2,0],
   ];
 
-function initializeApp(){
-    createBoard();
-    applyHandlers();
-}
-
 function switchPlayer () {
     if(currentPlayer) {
         currentPlayer = 1 - currentPlayer;
@@ -43,13 +38,6 @@ function switchPlayer () {
         $("h1").text("Player 1 Turn");
     }
 }
-
-function applyHandlers(){
-    $('.square').on('click', selectPiece);
-    $('button').on('click',  repopulateChecker);
-}
-
-
 
   function createBoard(){
     var gameBoard = $('#gameArea');
@@ -134,17 +122,9 @@ function resetGame() {
         [0,2,0,2,0,2,0,2],
         [2,0,2,0,2,0,2,0],
       ];
+      $('.square').empty();
       repopulateChecker();
 }
-
-   
-
-//     var checkerSelected = gameboard[row][column];
-//     var possibleMoveLeft = gameboard[row +1][column -1];
-//     var possibleMoveRight = gameboard[row+1][column+1];
-
-   
-
 
 function selectPiece(){
     
@@ -164,8 +144,6 @@ function selectPiece(){
         }
         $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
         $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
-        currentRow = parseInt($(this).attr('row'));
-        currentColumn = parseInt($(this).attr('col'));
         selectedChecker = gameboard[currentRow][currentColumn];
     } else {
         if($(this).hasClass('highLight')){
@@ -188,10 +166,6 @@ function selectPiece(){
             selectedChecker =null;
             return;
         }
-    
-
-
-       
     }
 }
 
