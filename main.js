@@ -120,7 +120,7 @@ function movePiece(){
 }
 
 function selectPiece(){
-    debugger;
+    
     if(!selectedChecker){
         console.log(this);
       
@@ -141,21 +141,29 @@ function selectPiece(){
         currentColumn = parseInt($(this).attr('col'));
         selectedChecker = gameboard[currentRow][currentColumn];
     } else {
-
-        selectedChecker = null;
-        $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).removeClass("highLight");
-        $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).removeClass("highLight");
-        var moveToRow = parseInt($(this).attr('row'));
-        var moveToColumn = parseInt($(this).attr('col'));
-        if(currentPlayer) {
-            gameboard[moveToRow][moveToColumn] = 1;
+        if($(this).hasClass('highLight')){
+            selectedChecker = null;
+            $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).removeClass("highLight");
+            $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).removeClass("highLight");
+            var moveToRow = parseInt($(this).attr('row'));
+            var moveToColumn = parseInt($(this).attr('col'));
+                if(currentPlayer) {
+                    gameboard[moveToRow][moveToColumn] = 1;
+                } else {
+                    gameboard[moveToRow][moveToColumn] = 2;
+                }
+            gameboard[currentRow][currentColumn]= 0;
+            $('.square').empty();
+            repopulateChecker();
         } else {
-            gameboard[moveToRow][moveToColumn] = 2;
+            $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).removeClass("highLight");
+            $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).removeClass("highLight");
+            selectedChecker =null;
+            return;
         }
-        
-        gameboard[currentRow][currentColumn]= 0;
-        $('.square').empty();
-        repopulateChecker();
-        
+    
+
+
+       
     }
 }
