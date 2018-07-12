@@ -15,23 +15,44 @@ function applyHandlers(){
 var selectedChecker = null;
 var jumpRight = false;
 var jumpLeft = false;
+
 var possibleJumpRow = null;
 var possibleJumpLeft = null;
 var possibleJumpRight = null;
+
+var possibleRowKing = null;
+var possibleMoveLeftKing = null;
+var possibleMoveRightKing = null; 
+
+var possibleJumpRowKing = null;
+var possibleJumpLeftKing = null;
+var possibleJumpRightKing = null;
+
+var possibleReverseRowKing= null;
+var possibleReverseMoveLeftKing = null;
+var possibleReverseMoveRightKing = null;
+
+var possibleReverseJumpRowKing = null;
+var possibleReverseJumpLeftKing = null;
+var possibleReverseJumpRightKing = null;
+
+
+
+
 var currentRow = null;
 var currentColumn = null; 
 var possibleRow = null;
 var possibleColumn = null;
 var currentPlayer = 0;
 var gameBoard = [
-    [0,1,0,1,0,1,0,1],
-    [1,0,1,0,1,0,1,0],
+    [0,1,0,1,0,0,0,1],
+    [1,0,1,0,1,0,2,0],
     [0,1,0,1,0,1,0,1],
     [0,0,2,0,0,0,0,0],
     [0,0,0,0,0,0,0,0],
     [2,0,2,0,2,0,2,0],
-    [0,2,0,2,0,2,0,2],
-    [2,0,2,0,2,0,2,0],
+    [0,1,0,2,0,2,0,2],
+    [0,0,0,0,2,0,2,0],
   ];
 
 function switchPlayer () {
@@ -113,13 +134,21 @@ function repopulateChecker(){
                 //jQuery target the div with the row attribute of the outer loop index and col attribute of inner loop index and append the checker
 
                 $(`div[row = ${i}][col= ${j}]`).append(checker);
-            }
+            } else if(gameBoard[i][j]=== 2){
             // if the gameBoard value at the outerloop index and innerloop index is a 2 the append a checker with the class of player2
 
-            else if(gameBoard[i][j]=== 2){
                 var checker = $('<div>').addClass('checker player2');
                 $(`div[row = ${i}][col= ${j}]`).append(checker);
+            } else if(gameBoard[i][j]=== 3){
+
+                var king = $('<div>').addClass('checker player1 king');
+                $(`div[row = ${i}][col= ${j}]`).append(king);
+
+            } else if(gameBoard[i][j]=== 4){
+                var king = $('<div>').addClass('checker player2 king');
+                $(`div[row = ${i}][col= ${j}]`).append(king);
             }
+            console.log(gameBoard);
         }
     }
     switchPlayer();
@@ -168,7 +197,71 @@ function selectPiece(){
         //check who the current player is
 
         if (currentPlayer) {
+            if(gameBoard[currentRow][currentColumn] === 3) {
+                possibleRowKing = currentRow + 1;
+                possibleMoveLeftKing = currentColumn - 1;
+                possibleMoveRightKing = currentColumn + 1;  
 
+                possibleJumpRowKing = currentRow + 2;
+                possibleJumpLeftKing = currentColumn - 2;
+                possibleJumpRightKing = currentColumn + 2;
+
+                possibleReverseRowKing= currentRow - 1;
+                possibleReverseMoveLeftKing = currentColumn -1;
+                possibleReverseMoveRightKing = currentColumn + 1; 
+
+                possibleReverseJumpRowKing = currentRow - 2;
+                possibleReverseJumpLeftKing = currentColumn - 2;
+                possibleReverseJumpRightKing = currentColumn + 2;
+                
+                if ( gameBoard[possibleRowKing][possibleMoveLeftKing] === 0 && gameBoard[possibleRowKing][possibleMoveRightKing] === 2) {
+
+                    // highlight the square of the div to the left and the div 2 rows down and 2 columns to the right
+    
+                    $(`div[row = ${possibleRowKing}][col = ${possibleMoveLeftKing}]`).addClass("highLight");
+                    $(`div[row = ${possibleJumpRowKing}][col = ${possibleJumpRightKing}]`).addClass("highLight");
+    
+                    //raise a flag that a jump to the right occurred
+    
+                    jumpRight = true; // <-------------------change to king jump
+                }
+
+                if ( gameBoard[possibleReverseRowKing][possibleRverseMoveLeftKing] === 0 && gameBoard[possibleReverseRowKing][possibleReverseMoveRightKing] === 2) {
+                    $(`div[row = ${possibleReverseRowKing}][col = ${possibleReverseMoveLeftKing}]`).addClass("highLight");
+                    $(`div[row = ${possibleReverseJumpRowKing}][col = ${possibleReverseJumpRightKing}]`).addClass("highLight");
+                    jumpRight = true;
+                }
+
+                if ( gameBoard[possibleReverseRowKing][possibleReverseMoveRightKing] === 0 && gameBoard[possibleReverseRowKing][possiblReverseeMoveLeftKing] === 2) {
+                    $(`div[row = ${possibleReverseRowKing}][col = ${possibleReverseMoveRightKing}]`).addClass("highLight");
+                    $(`div[row = ${possibleReverseJumpRowKing}][col = ${possibleReverseJumpLeftKing}]`).addClass("highLight");
+                    jumpLeft = true;
+                }
+    
+              
+                if ( gameBoard[possibleRowKing][possibleMoveRightKing] === 0 && gameBoard[possibleRowKing][possibleMoveLeftKing] === 2) {
+                
+                    // highlight the square of the div to the right and the div 2 rows down and 2 columns to the left
+  
+                  $(`div[row = ${possibleRowKing}][col = ${possibleMoveRightKing}]`).addClass("highLight");
+                  $(`div[row = ${possibleJumpRowKing}][col = ${possibleJumpLeftKing}]`).addClass("highLight");
+  
+                  //raise a flag that a jump to the left occurred
+  
+                  jumpLeft = true;
+                }
+
+                if ( gameBoard[possibleReverseRowKing][possibleReverseMoveLeftKing] === 0 && gameBoard[possibleReverseRowKing][possibleReverseMoveRightKing] === 0  ) {
+                    $(`div[row = ${possibleReverseRowKing}][col = ${possibleRverseMoveLeftKing}]`).addClass("highLight");
+                    $(`div[row= ${possiblerverseRowKing}][col = ${possiblerverseMoveRightKing}]`).addClass("highLight");
+                } 
+              
+      
+                if ( gameBoard[possibleRowKing][possibleMoveLeftKing] === 0 && gameBoard[possibleRowKing][possibleMoveRightKing] === 0  ) {
+                    $(`div[row = ${possibleRowKing}][col = ${possibleMoveLeftKing}]`).addClass("highLight");
+                    $(`div[row= ${possibleRowKing}][col = ${possibleMoveRightKing}]`).addClass("highLight");
+                } 
+            } else {
             // current player is Player 1 who controls the white checkers
 
             possibleRow = currentRow + 1;
@@ -180,7 +273,7 @@ function selectPiece(){
 
             // if the gameBoard array numeric value of the div on the left is 0 (empty) and the value of the div on the right is 2 (opponents piece) 
 
-            if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === 2) {
+            if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === 2 ||gameBoard[possibleRow][possibleMoveRight] === 4) {
 
                 // highlight the square of the div to the left and the div 2 rows down and 2 columns to the right
 
@@ -193,7 +286,7 @@ function selectPiece(){
             }
             // if the gameBoard array numeric value of the div on the right is 0 (empty) and the value of the div on the left is 2 (opponents piece) 
 
-            if ( gameBoard[possibleRow][possibleMoveRight] === 0 && gameBoard[possibleRow][possibleMoveLeft] === 2) {
+            if ( gameBoard[possibleRow][possibleMoveRight] === 0 && gameBoard[possibleRow][possibleMoveLeft] === 2 || gameBoard[possibleRow][possibleMoveLeft] === 4) {
                 
                   // highlight the square of the div to the right and the div 2 rows down and 2 columns to the left
 
@@ -211,8 +304,8 @@ function selectPiece(){
                 $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
                 $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
             } 
-          
-        } else {
+        }
+    } else {
 
             // check the possible movements of the pieces from player 2's perspective (red checkers)
 
@@ -238,10 +331,10 @@ function selectPiece(){
                     $(`div[row = ${possibleJumpRow}][col = ${possibleJumpLeft}]`).addClass("highLight");
                     jumpLeft = true;
             }
-                if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === 0  ) {
+            if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === 0  ) {
                     $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
                     $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
-                } 
+            } 
                 selectedChecker = gameBoard[currentRow][currentColumn];
         }
      
@@ -263,7 +356,7 @@ function selectPiece(){
             $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).removeClass("highLight");
             $(`div[row = ${possibleJumpRow}][col = ${possibleJumpLeft}]`).removeClass("highLight");
             $(`div[row = ${possibleJumpRow}][col = ${possibleJumpRight}]`).removeClass("highLight"); 
-
+           
             //find the numeric value of row attribute the highlighted div clicked
 
             var moveToRow = parseInt($(this).attr('row'));
@@ -275,9 +368,20 @@ function selectPiece(){
             //check which player is doing the action to determine which color checker to change the array value to repopulate the correct color
 
             if(currentPlayer) {
+                if( possibleRow === 7 || possibleJumpRow === 7) {
+                    gameBoard[moveToRow][moveToColumn] = 3;
+                    //if player 2 and the row moved to is the opponent's side then create a king
+                } else {
                 gameBoard[moveToRow][moveToColumn] = 1;
+                }
             } else {
-                gameBoard[moveToRow][moveToColumn] = 2;
+                if( possibleRow === 0 || possibleJumpRow === 0) {
+                    gameBoard[moveToRow][moveToColumn] = 4;
+                } else {
+                    gameBoard[moveToRow][moveToColumn] = 2;
+                }
+
+              
             }
 
             
