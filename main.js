@@ -7,10 +7,23 @@ function initializeApp(){
 
 
 function applyHandlers(){
-    $('.square').on('click', selectPiece);
-    $('.startGame').on('click',  repopulateChecker);
-    $('.resetButton').on('click', resetGame);
+    $('.square').on('click',selectPiece);
+    $('.square .light').off();
+    $('.startGame').on('click',  function(){
+        if(hasClicked === true){
+            return;
+        } else{
+            repopulateChecker();
+            hasClicked = true;
+        }
+    });
+    $('.resetButton').on('click', function(){
+        hasClicked = false;
+        resetGame();
+        
+    });
 }
+var hasClicked = false;
 var gameStarted = false;
 var selectedChecker = null;
 var jumpRight = false;
@@ -151,6 +164,9 @@ function resetGame() {
     // reloop through array an assign checkers to original position
 
     repopulateChecker();
+
+    
+    
 
     
 }
