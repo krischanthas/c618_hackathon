@@ -7,9 +7,9 @@ function initializeApp(){
 
 
 function applyHandlers(){
-    $('div .square .light').off();
     
     $('.square').on('click',selectPiece); 
+    $('.square.light').off();
     $('.startGame').on('click',  function(){
         if(hasClicked === true){
             return;
@@ -19,9 +19,10 @@ function applyHandlers(){
         }
     });
     $('.resetButton').on('click', function(){
-            hasClicked = false;
-            resetGame();
-        });       
+        hasClicked = false ;
+        resetGame();    
+            
+    });       
     
 }
 var hasClicked = false;
