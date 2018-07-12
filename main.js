@@ -1,12 +1,11 @@
 $(document).ready(initializeApp);
 
-function initializeApp(){
-    createBoard();
-    repopulateChecker()
-    // applyHandlers();
-}
 
-
+var selectedChecker = null;
+var currentRow = null;
+var currentColumn = null; 
+var possibleRow = null;
+var possibleColumn = null;
 var gameboard = [
     [0,1,0,1,0,1,0,1],
     [1,0,1,0,1,0,1,0],
@@ -17,6 +16,18 @@ var gameboard = [
     [0,2,0,2,0,2,0,2],
     [2,0,2,0,2,0,2,0],
   ];
+
+function initializeApp(){
+    createBoard();
+    repopulateChecker();
+    applyHandlers();
+}
+
+function applyHandlers(){
+    $('.square').on('click', selectPiece);
+}
+
+
 
   function createBoard(){
     var gameBoard = $('#gameArea');
@@ -62,7 +73,6 @@ var gameboard = [
             alternateColor = 1 - alternateColor;
             row.append(square);
            }
-       
         }
         // alternateColor = 1 - alternateColor;
         gameBoard.append(row);
@@ -70,15 +80,6 @@ var gameboard = [
     alternateColor = 1 - alternateColor;
   } }
 
-
-
-// Click handler
-
-// determine which players turn
-
-// current position, row/column
-
-// take the current piece, determine position, 
 
 function repopulateChecker(){
     var gameBoard = $('#gameArea');
@@ -97,9 +98,45 @@ function repopulateChecker(){
     }
 }
 
-function getLocation(){
-    var row = $(this).attr('row');
-    var column = $(this).attr('col');
+function movePiece(){
+    var row = parseInt($(this).attr('row'));
+    var column = parseInt($(this).attr('col'));
     console.log('Row: ', row);
-    console.log('Column: ', col);
+    console.log('Column: ', column);
+
+    var checkerSelected = gameboard[row][column];
+    var possibleMoveLeft = gameboard[row +1][column -1];
+    var possibleMoveRight = gameboard[row+1][column+1];
+
+   
+}
+
+function selectPiece(){
+    debugger;
+    if(!selectedChecker){
+        console.log(this);
+      
+            currentRow = parseInt($(this).attr('row'));
+            currentColumn = parseInt($(this).attr('col'));
+            possibleRow = currentRow + 1;
+            possibleMoveLeft = currentColumn -1;
+            possibleMoveRight = currentColumn + 1;
+            $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
+            $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
+
+
+        
+        currentRow = parseInt($(this).attr('row'));
+        currentColumn = parseInt($(this).attr('col'));
+        selectedChecker = gameboard[currentRow][currentColumn];
+    } else {
+
+        selectedChecker = null;
+        var moveToRow = parseInt($(this).attr('row'));
+        var moveToColumn = parseInt($(this).attr('col'));
+        gameboard[moveToRow][moveToColumn] = 1;
+        gameboard[currentRow][currentColumn]= 0;
+        $('.square').empty();
+        repopulateChecker();
+    }
 }

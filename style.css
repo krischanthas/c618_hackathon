@@ -1,4 +1,10 @@
 
+
+*{
+    margin: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-size: 0;
 
@@ -161,5 +167,13 @@ background: radial-gradient(grey, black);
 }
 
 .player1{
+
     background: radial-gradient(lightgrey, darkgray, whitesmoke);
+
+
+}
+
+.highLight {
+    border: 2px yellow solid;
+
 }
