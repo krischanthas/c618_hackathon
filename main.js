@@ -309,26 +309,13 @@ function selectPiece(){
             var moveToColumn = parseInt($(this).attr('col'));
             //check which player is doing the action to determine which color checker to change the array value to repopulate the correct color
             if(currentPlayer) {
-                if( possibleRow === 7 || possibleJumpRow === 7) {
-                    gameBoard[moveToRow][moveToColumn] = 3;
-                    //if player 2 and the row moved to is the opponent's side then create a king
-                } else {
                 gameBoard[moveToRow][moveToColumn] = 1;
-                }
             } else {
-                if( possibleRow === 0 || possibleJumpRow === 0) {
-                    gameBoard[moveToRow][moveToColumn] = 4;
-                } else {
-                    gameBoard[moveToRow][moveToColumn] = 2;
-                }
-
-              
+                gameBoard[moveToRow][moveToColumn] = 2; 
             }
 
-            
             //if a jump occured remove what the possible move would have been
-            // if($(this) === )
-            if(currentPlayer) {
+        if(currentPlayer) {
             if (jumpLeft) {
                 gameBoard[possibleRow][possibleMoveLeft]= 0;
             }  
@@ -345,25 +332,16 @@ function selectPiece(){
             }
             player2Score++;
         }
-        
-
             //remove the checker that is currently selected 
-
             gameBoard[currentRow][currentColumn]= 0;
-
             //remove all children divs from the divs with the class of square
-
             $('.square').empty();
             jumpRight = false;
             jumpLeft = false;
-
             //reloop through the array and create cheakers at the new array values
-
             repopulateChecker();
         } else {
-
             //if the div clicked does not have the class of highLight, remove the highLight class and reset the original checker clicked, then exit function
-
             $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).removeClass("highLight");
             $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).removeClass("highLight");
             selectedChecker =null;
