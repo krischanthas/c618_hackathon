@@ -17,7 +17,7 @@ body {
 }
 
 .gameTitle {
-    font-size: 55px;
+    font-size: 35px;
     padding-top: 1.75%;
     text-align: center;
     color: beige;
@@ -80,7 +80,7 @@ button {
 .rulesText {
     font-family: 'Diplomata SC', cursive;
     color: beige;
-    font-size: 11px;
+    font-size: 8px;
     text-align: center;
 }
 
