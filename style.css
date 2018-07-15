@@ -12,7 +12,7 @@ body {
 }
 
 .container {
-    width: 100vw;
+    width: 100%;
     height: 100vh;
 }
 
@@ -21,7 +21,6 @@ body {
     padding-top: 2%;
     text-align: center;
     color: beige;
-    background-position: relative;
 }
 
 .rulesTitle {
@@ -31,16 +30,21 @@ body {
 }
 
 .gameHeader {
-    width: 100%;
+    width: 74%;
     height: 15%;
     border-bottom: 2px solid black;
     background: linear-gradient(black, saddlebrown);
+    display: inline-block;
+    vertical-align: top;
 }
 
 .boardContainer{
-    width: 100%;
+    width: 74%;
     height: 85%;
     display: inline-block;
+    position: relative;
+    left: 26%;
+    bottom: 85%;
 }
 
 .statsArea {
@@ -48,10 +52,10 @@ body {
     height: 100%;
     border-right: 2px solid black;
     display: inline-block;
-    vertical-align: top;
     position: relative;
     padding: 0% 1% 0% 1%;
     background: linear-gradient(saddlebrown, black);
+    overflow:auto;
 }
 
 button {
@@ -70,6 +74,10 @@ button {
    position: relative;
    left: 10%;
 }
+.resetButton {
+    position: relative;
+    left: 16%
+}
 
 .rulesText {
     color: beige;
@@ -77,12 +85,13 @@ button {
     text-align: center;
 }
 
+
 .player1Score, .player2Score {
     position: relative;
     top: 1%;
-    margin: 0% 0% 6% 0%;
+    margin-bottom: 2%;
     text-align: center;
-    font-size: 4vmin;
+    font-size: 3vmin;
     color: beige;
 }
 
@@ -95,10 +104,8 @@ button {
 }
 
 .playArea {
-    width: 74%;
+    width: 100%;
     height:100%;
-    display: inline-block;
-    position: relative;
     background: linear-gradient(saddlebrown, black);
     background-image: url("Images/western.jpg");
     background-image: contain;
@@ -137,17 +144,20 @@ button {
 .square {
     display: inline-block;
     width: 10.5%;
-    height: 63px;
+    height: 6vmin;
     border-radius: 2px;
 }
 
 .light {
-    background: radial-gradient(beige, whitesmoke);
+    
+    background: radial-gradient(tan, whitesmoke);
+    
 }
 
 
 .dark {
-    background: radial-gradient(grey, black);
+    
+     background: radial-gradient(brown, black);
 }
 
 .checker {
