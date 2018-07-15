@@ -102,7 +102,7 @@ function createBoard(){
             }
         }
         //target the class of gameArea to append the row
-        $('#gameArea').append(row);
+        $('#checkerBoard').append(row);
         // alternate the value of alternateColor to make the next row start with opposite color div
         alternateColor = 1 - alternateColor;
     } 
