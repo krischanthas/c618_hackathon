@@ -87,11 +87,11 @@ button {
 }
 
 .player1Score {
-    color: indianred;
+    color:  darkgray;
 }
 
 .player2Score {
-    color: darkgray;
+    color: indianred
 }
 
 .playArea {
