@@ -70,11 +70,15 @@ var gameBoard = [
     [2,0,2,0,2,0,2,0],
   ];
 
-if (player1Score === 12) {
-    $('h1').text('Player 1 Wins');
-} else if (player2Score === 12) {
-    $('h1').text('Player 2 Wins');
-}
+ function checkForWinner() {
+
+    if (player1Score === 12) {
+        $('h1').text('Player 1 Wins');
+    } else if (player2Score === 12) {
+        $('h1').text('Player 2 Wins');
+    }
+ }
+
 
 function switchPlayer () {
     // if current player is true, make current player a false value, change the text in the header to message
@@ -272,13 +276,20 @@ function whichJumpOccurred( squareChosen ){
 function normalMovements() {
     debugger;
 
-    // if 2 enemeys block adajcent squares and both jumps are open
+    // if 2 enemys block adajcent squares and both jumps are open
     if( gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRow][moveRight] === enemyChecker && gameBoard[jumpRow][jumpLeft] === 0 && gameBoard[jumpRow][jumpLeft] === 0) {
         $(`div[row = ${jumpRow}][col = ${jumpLeft}]`).addClass("highLight"); 
         $(`div[row = ${jumpRow}][col = ${jumpRight}]`).addClass("highLight");
         specialJump = true;
         return;
     }
+
+    if (gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRow][moveRight] === enemyChecker && gameBoard[jumpRow][jumpLeft] !== 0 && gameBoard[jumpRow][jumpRight]=== 0) {
+        $(`div[row = ${jumpRow}][col = ${jumpRight}]`).addClass("highLight");
+        jumpRightOccurred = true;
+        return;
+    }
+
   
     //if the possible move left is occupied by a friendly piece and the right is an enemy piece
     
@@ -286,12 +297,17 @@ function normalMovements() {
     if ( gameBoard[moveRow][moveLeft] === friendlyChecker && gameBoard[moveRow][moveRight] === enemyChecker && gameBoard[jumpRow][jumpRight] === 0) {
         $(`div[row = ${jumpRow}][col = ${jumpRight}]`).addClass("highLight");
         jumpRightOccurred = true;
-        return
+        return;
     }
+      if ( gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRow][moveRight] === friendlyChecker && gameBoard[jumpRow][jumpLeft] !== 0) {
+          selectedChecker = null;
+          return;
+      }  
       // if the move right is an friendy and move left is a enemy
       if ( gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRow][moveRight] === friendlyChecker) {
         $(`div[row = ${jumpRow}][col = ${jumpLeft}]`).addClass("highLight");
         jumpLeftOccurred = true;
+        return;
     }
     // if the move right is an enemy and move left is a friendly
     if ( gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRow][moveRight] === friendlyChecker) {
@@ -435,14 +451,7 @@ function selectPiece(){
             moveToRow = parseInt($(this).attr('row'));
             //find the numeric value of col attribute the highlighted div clicked
             moveToColumn = parseInt($(this).attr('col'));
-            
-            
-            // get the row value of the selected square
-
-            // get the col value of selected square
-            
-
-
+        
             //check which player is doing the action to determine which color checker to change the array value to repopulate the correct color
             if(currentPlayer) {
                 gameBoard[moveToRow][moveToColumn] = 1;
