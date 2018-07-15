@@ -126,6 +126,7 @@ button {
     left: 50%;
     top: 56%;
     transform:translate(-50%,-50%);
+    
 }
 
 .row {
@@ -168,7 +169,7 @@ button {
 }
 
 .highLight {
-    border: 2px yellow solid;
+    border: 3px yellow inset;
 
 }
 .king{
