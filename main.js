@@ -38,6 +38,8 @@ var currentColumn = null;
 var possibleRow = null;
 var possibleColumn = null;
 var currentPlayer = 0;
+var friendlyChecker = null;
+var enemyChecker = null;
 var gameBoard = [
     [0,1,0,1,0,1,0,1],
     [1,0,1,0,1,0,1,0],
@@ -95,6 +97,94 @@ function createBoard(){
     } 
 }
 
+function determinePlayerMovements( player ) {
+    if (player) {
+        console.log(player);
+        // current player is Player 1 who controls the white checkers
+        possibleRow = currentRow + 1;
+        possibleMoveLeft = currentColumn - 1;
+        possibleMoveRight = currentColumn + 1; 
+        possibleJumpRow = currentRow + 2;
+        possibleJumpLeft = currentColumn - 2;
+        possibleJumpRight = currentColumn + 2;
+        friendlyChecker = 1;
+        enemyChecker = 2;
+    } else {
+        possibleRow = currentRow - 1;
+        possibleMoveLeft = currentColumn -1;
+        possibleMoveRight = currentColumn + 1; 
+        possibleJumpRow = currentRow - 2;
+        possibleJumpLeft = currentColumn - 2;
+        possibleJumpRight = currentColumn + 2;
+        friendlyChecker = 2;
+        enemyChecker = 1;
+    }
+}
+
+function determinePossibleMovements() {
+    if( gameBoard[possibleRow][possibleMoveLeft] === enemyChecker && gameBoard[possibleRow][possibleMoveRight] === enemyChecker ) {
+        $(`div[row = ${possibleJumpRow}][col = ${possibleJumpLeft}]`).addClass("highLight"); 
+        $(`div[row = ${possibleJumpRow}][col = ${possibleJumpRight}]`).addClass("highLight");
+        jumpRight = true;
+        jumpLeft = true;
+    }
+    // if the possible move left is empty and right is off the board
+    if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleMoveRight] > 7) {
+        $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");   
+    }
+    // if the possible move left is an opponent and right is of the table
+    if ( gameBoard[possibleRow][possibleMoveLeft] === enemyChecker && gameBoard[possibleMoveRight] > 7) {
+        $(`div[row = ${possibleJumpRow}][col = ${possibleJumpLeft}]`).addClass("highLight"); 
+        jumpLeft = true;
+    }
+    // if the possible move left is off the table and right is open
+    if ( gameBoard[possibleMoveLeft] < 0 && gameBoard[possibleRow][possibleMoveRight] === 0) {
+        $(`div[row = ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");   
+    }
+    //if the possible move left is occupied by a friendly piece and the right is an enemy piece
+    if ( gameBoard[possibleRow][possibleMoveLeft] === 1 && gameBoard[possibleRow][possibleMoveRight] === enemyChecker) {
+        $(`div[row = ${possibleJumpRow}][col = ${possibleJumpRight}]`).addClass("highLight");
+        jumpRight = true;
+    }
+      // if the move right is an friendy and move left is a enemy
+      if ( gameBoard[possibleRow][possibleMoveLeft] === enemyChecker && gameBoard[possibleRow][possibleMoveRight] === friendlyChecker) {
+        $(`div[row = ${possibleJumpRow}][col = ${possibleJumpLeft}]`).addClass("highLight");
+        jumpLeft = true;
+    }
+    // if the move right is an enemy and move left is a friendly
+    if ( gameBoard[possibleRow][possibleMoveLeft] === enemyChecker && gameBoard[possibleRow][possibleMoveRight] === friendlyChecker) {
+        $(`div[row = ${possibleJumpRow}][col = ${possibleJumpLeft}]`).addClass("highLight");
+        jumpLeft = true;
+    }
+    // if the move left is open and the move right is a friendly pice
+    if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === friendlyChecker) {
+        $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");    
+    }
+    // if the move left is a friendly piece and the move right is open
+    if ( gameBoard[possibleRow][possibleMoveLeft] === friendlyChecker && gameBoard[possibleRow][possibleMoveRight] === 0){
+        $(`div[row = ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
+    }
+    // if there is an enemy piece in an adjacent square
+    if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === enemyChecker) {
+        // highlight the square of the div to the left and the div 2 rows down and 2 columns to the right
+        $(`div[row = ${possibleJumpRow}][col = ${possibleJumpRight}]`).addClass("highLight");
+        //raise a flag that a jump to the right occurred
+        jumpRight = true;
+    }
+    // if the gameBoard array numeric value of the div on the right is 0 (empty) and the value of the div on the left is 2 (opponents piece) 
+    if ( gameBoard[possibleRow][possibleMoveRight] === 0 && gameBoard[possibleRow][possibleMoveLeft] === enemyChecker) {
+        // highlight the square of the div to the right and the div 2 rows down and 2 columns to the left
+        $(`div[row = ${possibleJumpRow}][col = ${possibleJumpLeft}]`).addClass("highLight");
+        //raise a flag that a jump to the left occurred
+        jumpLeft = true;
+        }
+    //if both available moves are do not contain an opponents piece then add the class of highlight to both divs
+    else if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === 0  ) {
+        $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
+        $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
+    } 
+}
+
 function repopulateChecker(){
         // loop through the gameBoard array
         for(var i = 0; i < gameBoard.length; i++){
@@ -110,9 +200,9 @@ function repopulateChecker(){
                     var checker = $('<div>').addClass('checker player2');
                     $(`div[row = ${i}][col= ${j}]`).append(checker);
                 } 
-        } 
-    }
-                switchPlayer();
+            } 
+        }
+     switchPlayer();
 }
 
 function resetGame() {
@@ -143,158 +233,9 @@ function selectPiece(){
         currentRow = parseInt($(currentChecker).attr('row'));
         //get the numeric value of the div's col attribute that was clicked
         currentColumn = parseInt($(currentChecker).attr('col'));
-        //check who the current player is
-        // current player is Player 1 who controls the white checkers
-        if (currentPlayer) {
-            // current player is Player 1 who controls the white checkers
-            possibleRow = currentRow + 1;
-            possibleMoveLeft = currentColumn - 1;
-            possibleMoveRight = currentColumn + 1; 
-            possibleJumpRow = currentRow + 2;
-            possibleJumpLeft = currentColumn - 2;
-            possibleJumpRight = currentColumn + 2;
-            //if the possible move is off the table to the left or right is undefined
-            if(gameBoard[possibleRow][possibleMoveLeft] === undefined){
-                $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
-            } else if( gameBoard[possibleRow][possibleMoveRight] === undefined){
-                $(`div[row= ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
-            }
-            //if this piece is adjacent to 2 enemies
-            if( gameBoard[possibleRow][possibleMoveLeft] === 2 && gameBoard[possibleRow][possibleMoveRight] === 2 ) {
-                $(`div[row = ${possibleJumpRow}][col = ${possibleJumpLeft}]`).addClass("highLight"); 
-                $(`div[row = ${possibleJumpRow}][col = ${possibleJumpRight}]`).addClass("highLight");
-                jumpRight = true;
-                jumpLeft = true;
-            }
-            // if the possible move left is empty and right is off the board
-            if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleMoveRight] > 7) {
-                $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");   
-            }
-            // if the possible move left is an opponent and right is of the table
-            if ( gameBoard[possibleRow][possibleMoveLeft] === 2 && gameBoard[possibleMoveRight] > 7) {
-                $(`div[row = ${possibleJumpRow}][col = ${possibleJumpLeft}]`).addClass("highLight"); 
-                jumpLeft = true;
-            }
-            // if the possible move left is off the table and right is open
-            if ( gameBoard[possibleMoveLeft] < 0 && gameBoard[possibleRow][possibleMoveRight] === 0) {
-                $(`div[row = ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");   
-            }
-            //if the possible move left is occupied by a friendly piece and the right is an enemy piece
-            if ( gameBoard[possibleRow][possibleMoveLeft] === 1 && gameBoard[possibleRow][possibleMoveRight] === 2) {
-                $(`div[row = ${possibleJumpRow}][col = ${possibleJumpRight}]`).addClass("highLight");
-                jumpRight = true;
-            }
-              // if the move right is an friendy and move left is a enemy
-              if ( gameBoard[possibleRow][possibleMoveLeft] === 2 && gameBoard[possibleRow][possibleMoveRight] === 1) {
-                $(`div[row = ${possibleJumpRow}][col = ${possibleJumpLeft}]`).addClass("highLight");
-                jumpLeft = true;
-            }
-            // if the move right is an enemy and move left is a friendly
-            if ( gameBoard[possibleRow][possibleMoveLeft] === 2 && gameBoard[possibleRow][possibleMoveRight] === 1) {
-                $(`div[row = ${possibleJumpRow}][col = ${possibleJumpLeft}]`).addClass("highLight");
-                jumpLeft = true;
-            }
-            // if the move left is open and the move right is a friendly pice
-            if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === 1) {
-                $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");    
-            }
-            // if the move left is a friendly piece and the move right is open
-            if ( gameBoard[possibleRow][possibleMoveLeft] === 1 && gameBoard[possibleRow][possibleMoveRight] === 0){
-                $(`div[row = ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
-            }
-            // if there is an enemy piece in an adjacent square
-            if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === 2) {
-                // highlight the square of the div to the left and the div 2 rows down and 2 columns to the right
-                $(`div[row = ${possibleJumpRow}][col = ${possibleJumpRight}]`).addClass("highLight");
-                //raise a flag that a jump to the right occurred
-                jumpRight = true;
-            }
-            // if the gameBoard array numeric value of the div on the right is 0 (empty) and the value of the div on the left is 2 (opponents piece) 
-            if ( gameBoard[possibleRow][possibleMoveRight] === 0 && gameBoard[possibleRow][possibleMoveLeft] === 2) {
-                // highlight the square of the div to the right and the div 2 rows down and 2 columns to the left
-                $(`div[row = ${possibleJumpRow}][col = ${possibleJumpLeft}]`).addClass("highLight");
-                //raise a flag that a jump to the left occurred
-                jumpLeft = true;
-                }
-            //if both available moves are do not contain an opponents piece then add the class of highlight to both divs
-            else if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === 0  ) {
-                $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
-                $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
-            } 
-    } else {
-            // check the possible movements of the pieces from player 2's perspective (red checkers)
-            possibleRow = currentRow - 1;
-            possibleMoveLeft = currentColumn -1;
-            possibleMoveRight = currentColumn + 1; 
-            possibleJumpRow = currentRow - 2;
-            possibleJumpLeft = currentColumn - 2;
-            possibleJumpRight = currentColumn + 2;
-            //if the possible move is off the table to the left or right is undefined
-            if(gameBoard[possibleRow][possibleMoveLeft] === undefined){
-                $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
-            } else if( gameBoard[possibleRow][possibleMoveRight] === undefined){
-                $(`div[row= ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
-            }
-            // if the possible move left is empty and right is off the board
-            if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleMoveRight] > 7) {
-                $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");   
-            }
-            // if the possible move left is an opponent and right is of the table
-            if ( gameBoard[possibleRow][possibleMoveLeft] === 1 && gameBoard[possibleMoveRight] > 7) {
-                $(`div[row = ${possibleJumpRow}][col = ${possibleJumpLeft}]`).addClass("highLight"); 
-                jumpLeft = true;  
-            }
-            // if the possible move left is off the table and right is open
-            if ( gameBoard[possibleMoveLeft] < 0 && gameBoard[possibleRow][possibleMoveRight] === 0) {
-                $(`div[row = ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight"); 
-                jumpRight = true;  
-            }
-            //if the piece is adjacent to two enemies
-            if( gameBoard[possibleRow][possibleMoveLeft] === 1 && gameBoard[possibleRow][possibleMoveRight] === 1 ) {
-                $(`div[row = ${possibleJumpRow}][col = ${possibleJumpLeft}]`).addClass("highLight"); 
-                $(`div[row = ${possibleJumpRow}][col = ${possibleJumpRight}]`).addClass("highLight");
-                jumpRight = true;
-                jumpLeft = true;
-            }
-            //if the possible move left is occupied by a friendly piece and the right is an enemy piece
-            if ( gameBoard[possibleRow][possibleMoveLeft] === 2 && gameBoard[possibleRow][possibleMoveRight] === 1) {
-                $(`div[row = ${possibleJumpRow}][col = ${possibleJumpRight}]`).addClass("highLight");
-                jumpRight = true;
-            }
-            // if the move right is an enemy and move left is a friendly
-            if ( gameBoard[possibleRow][possibleMoveLeft] === 2 && gameBoard[possibleRow][possibleMoveRight] === 1) {
-                $(`div[row = ${possibleJumpRow}][col = ${possibleJumpLeft}]`).addClass("highLight");
-                jumpLeft = true;
-            }
-            // if the move left is open and the move right is a friendly peice
-            if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === 2) {
-                $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");    
-            }
-            // if the move left is a friendly piece and the move right is open
-            if ( gameBoard[possibleRow][possibleMoveLeft] === 2 && gameBoard[possibleRow][possibleMoveRight] === 0){
-                $(`div[row = ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
-            }
-              // if the move right is an friendy and move left is a enemy
-              if ( gameBoard[possibleRow][possibleMoveLeft] === 1 && gameBoard[possibleRow][possibleMoveRight] === 2) {
-                $(`div[row = ${possibleJumpRow}][col = ${possibleJumpLeft}]`).addClass("highLight");
-                jumpLeft = true;
-            }
-            // if move left is empty and move right is an enemy
-            if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === 1) {
-                $(`div[row = ${possibleJumpRow}][col = ${possibleJumpRight}]`).addClass("highLight");
-                jumpRight = true;
-            }
-            // highlight the square of the div to the right and the div 2 rows down and 2 columns to the left   
-            if ( gameBoard[possibleRow][possibleMoveRight] === 0 && gameBoard[possibleRow][possibleMoveLeft] === 1) {
-                    $(`div[row = ${possibleJumpRow}][col = ${possibleJumpLeft}]`).addClass("highLight");
-                    jumpLeft = true;
-            }
-            //if the move right is open and the move left is open
-            if ( gameBoard[possibleRow][possibleMoveLeft] === 0 && gameBoard[possibleRow][possibleMoveRight] === 0  ) {
-                    $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).addClass("highLight");
-                    $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).addClass("highLight");
-            } 
-        }
+        // check who the current player is, and what possible moves they will have
+        determinePlayerMovements( currentPlayer );
+        determinePossibleMovements(); 
         selectedChecker = gameBoard[currentRow][currentColumn];
     } else {
         //if the next square clicked has the class of highlight
@@ -351,10 +292,8 @@ function selectPiece(){
 }
 
 function removeHighlights(){
-             $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).removeClass("highLight");
+            $(`div[row = ${possibleRow}][col = ${possibleMoveLeft}]`).removeClass("highLight");
             $(`div[row= ${possibleRow}][col = ${possibleMoveRight}]`).removeClass("highLight");
             $(`div[row = ${possibleJumpRow}][col = ${possibleJumpLeft}]`).removeClass("highLight");
             $(`div[row = ${possibleJumpRow}][col = ${possibleJumpRight}]`).removeClass("highLight");
 }
-
-

@@ -3,7 +3,8 @@
 *{
     margin: 0;
     box-sizing: border-box;
-    font-family: 'Diplomata SC', cursive;
+    font-family: "Permanent Marker", cursive;
+    text-shadow: 4px 4px 2px black;
 }
 
 body {
@@ -25,8 +26,6 @@ body {
 
 .rulesTitle {
     position: relative;
-    top: 1%;
-    margin: 0% 0% 7% 0%;
     color: beige;
     text-align: center;
 }
@@ -50,7 +49,6 @@ body {
     border-right: 2px solid black;
     display: inline-block;
     vertical-align: top;
-    font-size: 1rem;
     position: relative;
     padding: 0% 1% 0% 1%;
     background: linear-gradient(saddlebrown, black);
@@ -62,20 +60,20 @@ button {
     height: 8%;
     margin: 5% 0% 5% 0%;
     background: radial-gradient(grey, beige);
-    font-size: larger;
-    box-shadow: 0 5px 13px 10px rgba(0,0,0,5), 3px 10px 15px 10px rgba(0,0,0,10);
-    border-radius: 6px;
-    font-family: 'Diplomata SC', cursive;
+    font-size: 3vmin;
+    box-shadow: 0 5px 13px 10px rgba(0,0,0,5);
+    border-radius: 4%;
+    text-shadow: 1px 1px white;
 }
 
 .startGame {
-    margin: 0% 7% 0% 5%;
+   position: relative;
+   left: 10%;
 }
 
 .rulesText {
-    font-family: 'Diplomata SC', cursive;
     color: beige;
-    font-size: 8px;
+    font-size: 2vmin;
     text-align: center;
 }
 
@@ -84,7 +82,7 @@ button {
     top: 1%;
     margin: 0% 0% 6% 0%;
     text-align: center;
-    font-size: 2vmin;
+    font-size: 4vmin;
     color: beige;
 }
 
@@ -98,7 +96,7 @@ button {
 
 .playArea {
     width: 74%;
-    height: 100%;
+    height:100%;
     display: inline-block;
     position: relative;
     background: linear-gradient(saddlebrown, black);
@@ -109,7 +107,7 @@ button {
 
 .gameBoarder {
     width: 50%;
-    height: 90%;
+    height: 82%;
     position: relative;
     left: 50%;
     top:50%;
@@ -129,7 +127,6 @@ button {
     background-image: url("Images/gradingwood.jpeg");
     background-size: cover;
     background-repeat: no-repeat;
-
 }
 
 .row {
