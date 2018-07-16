@@ -21,8 +21,10 @@ function applyHandlers(){
     $('.resetButton').on('click', function(){
         hasClicked = false ;
         resetGame();           
-    });         
+    });  
+    $(".shadow").on('click', removeModal);       
 }
+
 var hasClicked = false;
 var gameStarted = false;
 var selectedChecker = null;
@@ -72,27 +74,29 @@ var reverseMoveRightKing = null;
 var reverseJumpRowKing = null;
 var reverseJumpLeftKing = null;
 var reverseJumpRightKing = null;
+var reverseSpecialJump = false;
 
-
+var reverseJumpLeftOccurred = false;
+var reverseJumpRightOccurred = false;
 
 
 var gameBoard = [
-    [0,1,0,0,0,1,0,1],
-    [1,0,2,0,1,0,1,0],
+    [0,1,0,1,0,1,0,1],
+    [1,0,1,0,1,0,1,0],
     [0,1,0,1,0,1,0,1],
     [0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0],
     [2,0,2,0,2,0,2,0],
-    [0,1,0,2,0,2,0,2],
-    [0,0,2,0,2,0,2,0],
+    [0,2,0,2,0,2,0,2],
+    [2,0,2,0,2,0,2,0],
   ];
 
  function checkForWinner() {
 
     if (player1Score === 12) {
-        $('h1').text('Player 1 Wins');
+        $('h1').text('Player 1 Wins').addClass('rainbowText');
     } else if (player2Score === 12) {
-        $('h1').text('Player 2 Wins');
+        $('h1').text('Player 2 Wins').addClass('rainbowText');
     }
  }
 
@@ -106,6 +110,7 @@ function switchPlayer () {
         currentPlayer = 1 - currentPlayer;
         $("h1").text("Player 1 Turn");
     }
+    checkForWinner();
 }
 
 // create a function that turns off the ability to click on the opponent's checkers
@@ -263,16 +268,18 @@ function directionOfPlayerMovements( player , checkerType ) {
 
 function checkBoardEdge() {
     debugger;
+   
     //if the possible move left is empty and right is off the board
     if ( gameBoard[moveRow][moveLeft] === 0 && gameBoard[moveRight] === undefined) {
         $(`div[row = ${moveRow}][col = ${moveLeft}]`).addClass("highLight");   
         return;
     }
-    // if the possible move left is an opponent and right is off the table and the jump left is an enemyChecker
+    // if the possible move left is an opponent and right is off the table and the jump left is not open
     if ( gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRight] === undefined && gameBoard[jumpRow][jumpLeft] !== 0) {
         selectedChecker = null;
         return;
     }
+
     // if the possible move left is an opponent and right is off the table
     if ( gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRight] === undefined) {
         $(`div[row = ${jumpRow}][col = ${jumpLeft}]`).addClass("highLight");
@@ -366,7 +373,12 @@ function whichJumpOccurred( squareChosen ){
         jumpLeftOccurred=true;
     } else if( squareChosen === gameBoard[jumpRow][jumpRight]){
         jumpRightOccurred=true;
+    } else if( squareChosen === gameBoard[reverseJumpRowKing][reverseJumpRightKing]){
+        reverseJumpRightOccured === true;
+    } else if( squareChosen === gameBoard[reverseJumpRowKing][reverseJumpLeftKing]){
+        reverseJumpLeftOccured === true;
     }
+
 }
 
 
@@ -379,10 +391,18 @@ function normalMovements() {
         $(`div[row = ${moveRow}][col = ${moveLeft}]`).addClass("highLight");  
         return; 
     }
+    // if the jump is off the board and the move right is open
     if (gameBoard[jumpRow] === undefined && gameBoard[moveRow][moveRight] === 0) {
         $(`div[row = ${moveRow}][col = ${moveRight}]`).addClass("highLight");  
         return; 
     }
+    // if 2 enemies behind you and the jump is open
+    // if( selectedChecker ===  gameBoard[reverseRowKing][reverseMoveLeftKing] === enemyChecker && gameBoard[reverseRowKing][reverseMoveRightKing] === enemyChecker && gameBoard[reverseJumpRowKing][reverseJumpLeftKing] === 0 && gameBoard[reverseJumpRowKing][reverseJumpRightKing] === 0) {
+    //     $(`div[row = ${reverseJumpRowKing}][col = ${reverseJumpLeftKing}]`).addClass("highLight"); 
+    //     $(`div[row = ${reverseJumpRowKing}][col = ${reverseJumpRightKing}]`).addClass("highLight");
+    //     reverseSpecialJump = true;
+    // }
+
     // if 2 enemys block adajcent squares and both jumps are open
     if( gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRow][moveRight] === enemyChecker && gameBoard[jumpRow][jumpLeft] === 0 && gameBoard[jumpRow][jumpLeft] === 0) {
         $(`div[row = ${jumpRow}][col = ${jumpLeft}]`).addClass("highLight"); 
@@ -610,36 +630,6 @@ function selectPiece(){
             moveToRow = parseInt($(this).attr('row'));
             //find the numeric value of col attribute the highlighted div clicked
             moveToColumn = parseInt($(this).attr('col'));
-        
-            //check which player is doing the action to determine which color checker to change the array value to repopulate the correct color
-            // if(currentPlayer) {
-            //     gameBoard[moveToRow][moveToColumn] = 1;
-            // } else {
-            //     gameBoard[moveToRow][moveToColumn] = 2; 
-            // }
-            // if(currentPlayer) {
-            //     debugger;
-            //     if( moveRow === 7 && selectedChecker === 1) {
-            //         gameBoard[moveToRow][moveToColumn] = 3;
-            //         return;
-            //         //if player 2 and the row moved to is the opponent's side then create a king
-            //     } else if (selectedChecker === 3){
-            //         gameBoard[moveToRow][moveToColumn] = 3;
-            //         return;
-            //     } else {
-            //         gameBoard[moveToRow][moveToColumn] = 1;
-            //     }
-            // } else {
-            //     if( moveRow === 0 && selectedChecker === 2) {
-            //         gameBoard[moveToRow][moveToColumn] = 4;
-            //         return;
-            //     } else if (selectedChecker === 4){
-            //         gameBoard[moveToRow][moveToColumn] = 4;
-            //         return;
-            //     } else {
-            //         gameBoard[moveToRow][moveToColumn] = 2;
-            //     } 
-            // }
             whichCheckerToPopulate( currentPlayer);
 
             //if a jump occured remove what the possible move would have been
@@ -669,4 +659,12 @@ function selectPiece(){
 
 function removeHighlights(){
         $(".square").removeClass("highLight");
+}
+
+function displayModal() {
+    $(".blackScreen").addClass("show");
+}
+
+function removeModal() {
+    $(".blackscreen.show").removeClass("show");
 }
