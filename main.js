@@ -83,9 +83,9 @@ var gameBoard = [
     [1,0,1,0,1,0,1,0],
     [0,1,0,1,0,1,0,1],
     [0,0,0,0,0,0,0,0],
-    [0,0,0,1,0,0,0,0],
+    [0,0,0,0,0,0,0,0],
     [2,0,2,0,2,0,2,0],
-    [0,1,0,2,0,0,0,2],
+    [0,2,0,2,0,2,0,2],
     [2,0,2,0,2,0,2,0],
   ];
 
@@ -284,7 +284,6 @@ function checkBoardEdge() {
 }
 
 function checkIfJumpIsValid(){
-    debugger;
     // if the possible jump left is an opponent's piece and the move right is open
     if(gameBoard[jumpRow][jumpLeft] === enemyChecker && gameBoard[moveRow][moveRight] === 0) {
         $(`div[row = ${moveRow}][col = ${moveRight}]`).addClass("highLight");   
@@ -311,7 +310,6 @@ function checkIfJumpIsValid(){
 }
 
 function incrementScore () {
-    debugger;
     if(currentPlayer) {
         if (specialJump) {
             whichJumpOccurred(gameBoard[moveToRow][moveToColumn]);
@@ -339,7 +337,6 @@ function incrementScore () {
 }
 
 function whichJumpOccurred( squareChosen ){
-    debugger;
     if (squareChosen === gameBoard[jumpRow][jumpLeft]){
         jumpLeftOccurred=true;
     } else if( squareChosen === gameBoard[jumpRow][jumpRight]){
@@ -350,7 +347,6 @@ function whichJumpOccurred( squareChosen ){
 
 
 function normalMovements() {
-    debugger;
       //if both available moves are do not contain an opponents piece then add the class of highlight to both divs
     if ( gameBoard[moveRow][moveLeft] === 0 && gameBoard[moveRow][moveRight] === 0  ) {
         $(`div[row = ${moveRow}][col = ${moveLeft}]`).addClass("highLight");
@@ -367,8 +363,8 @@ function normalMovements() {
         $(`div[row = ${moveRow}][col = ${moveRight}]`).addClass("highLight");  
         return; 
     }
-       // if the jumpleft is off the board and the jump is off the board
-       if (gameBoard[moveRow][moveLeft] === 0 && gameBoard[jumpRow] === undefined) {
+    // if the jumpleft is off the board and the jump is off the board
+    if (gameBoard[moveRow][moveLeft] === 0 && gameBoard[jumpRow] === undefined) {
         $(`div[row = ${moveRow}][col = ${moveLeft}]`).addClass("highLight");  
         return; 
     }
@@ -378,8 +374,6 @@ function normalMovements() {
         jumpLeftOccurred = true;
         return;
     }
-
-
     // if 2 enemys block adajcent squares and both jumps are open
     if( gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRow][moveRight] === enemyChecker && gameBoard[jumpRow][jumpLeft] === 0 && gameBoard[jumpRow][jumpRight] === 0) {
         $(`div[row = ${jumpRow}][col = ${jumpLeft}]`).addClass("highLight"); 
