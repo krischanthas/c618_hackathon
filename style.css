@@ -172,7 +172,14 @@ button {
     border: 3px yellow inset;
 
 }
-.king{
-    background-color: gold;
+.king1{
+    background-image: url("Images/Greek_coin_tetradrachme_panathenaic_games-3.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+.king2{
+    background-image: url("Images/gold-guinea-front-400x400.png");
+    background-size: contain;
+    background-repeat: no-repeat;    
 }
 
