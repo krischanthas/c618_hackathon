@@ -29,8 +29,6 @@ var hasClicked = false;
 var gameStarted = false;
 var selectedChecker = null;
 
-var enemyCheckerNearBy = false;
-
 var jumpRightOccurred = false;
 var jumpLeftOccurred = false;
 var jumpRow = null;
@@ -92,7 +90,6 @@ var gameBoard = [
   ];
 
  function checkForWinner() {
-
     if (player1Score === 12) {
         $('h1').text('Player 1 Wins').addClass('rainbowText');
     } else if (player2Score === 12) {
@@ -121,9 +118,6 @@ function deselectOpponentCheckers(){
         $('.player1').off();
     }
 }
-
-
-
 
 function createBoard(){
     //assign the alternateColor a false value
@@ -154,14 +148,7 @@ function createBoard(){
     } 
 }
 
-function isAnEnemyCheckerNearBy() {
-    if(gameBoard[moveRow][moveLeft] === enemyChecker || gameBoard[moveRow][moveRight] === enemyChecker) {
-        enemyCheckerNearBy = true;
-    }
-}
-
 function releaseTheKing( player ) {
-    debugger;
     if (player === 1) {
         moveRow = currentRow - 1;
         moveLeft = currentColumn - 1;
@@ -188,16 +175,12 @@ function releaseTheKing( player ) {
         enemyChecker = 1;
         enemyKing = 3;
     }   
+// for future reference this should be a function containing the contionals for a king    
 normalMovements();
 }
 
-
-
-
 function directionOfPlayerMovements( player , checkerType ) {
-    debugger;
     if (player === 1 && checkerType === 1) {
-        console.log(player);
         // current player is Player 1 who controls the white checkers
         moveRow = currentRow + 1;
         moveLeft = currentColumn - 1;
@@ -217,22 +200,19 @@ function directionOfPlayerMovements( player , checkerType ) {
         jumpRow = currentRow + 2;
         jumpLeft = currentColumn - 2;
         jumpRight = currentColumn + 2;
-
         reverseRowKing= currentRow - 1;
         reverseMoveLeftKing = currentColumn -1;
         reverseMoveRightKing = currentColumn + 1; 
-
         reverseJumpRowKing = currentRow - 2;
         reverseJumpLeftKing = currentColumn - 2;
         reverseJumpRightKing = currentColumn + 2;
-
         friendlyChecker = 1;
         friendlyKing = 3;
         enemyChecker = 2;
         enemyKing = 4;
         return;
 
-    } else if(player ===0 && checkerType ===2) {
+    } else if(player === 0 && checkerType === 2) {
         moveRow = currentRow - 1;
         moveLeft = currentColumn -1;
         moveRight = currentColumn + 1; 
@@ -250,15 +230,12 @@ function directionOfPlayerMovements( player , checkerType ) {
         jumpRow = currentRow - 2;
         jumpLeft = currentColumn + 2;
         jumpRight = currentColumn - 2;
-
         reverseRowKing= currentRow +1;
         reverseMoveLeftKing = currentColumn +1;
         reverseMoveRightKing = currentColumn - 1; 
-
         reverseJumpRowKing = currentRow + 2;
         reverseJumpLeftKing = currentColumn + 2;
         reverseJumpRightKing = currentColumn - 2;
-
         friendlyChecker = 2;
         friendlyKing = 4;
         enemyChecker = 1;
@@ -267,8 +244,6 @@ function directionOfPlayerMovements( player , checkerType ) {
 }
 
 function checkBoardEdge() {
-    debugger;
-   
     //if the possible move left is empty and right is off the board
     if ( gameBoard[moveRow][moveLeft] === 0 && gameBoard[moveRight] === undefined) {
         $(`div[row = ${moveRow}][col = ${moveLeft}]`).addClass("highLight");   
@@ -279,7 +254,6 @@ function checkBoardEdge() {
         selectedChecker = null;
         return;
     }
-
     // if the possible move left is an opponent and right is off the table
     if ( gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRight] === undefined) {
         $(`div[row = ${jumpRow}][col = ${jumpLeft}]`).addClass("highLight");
@@ -307,12 +281,9 @@ function checkBoardEdge() {
         selectedChecker = null;
         return;
     }
-    
-
 }
 
 function checkIfJumpIsValid(){
-    debugger;
     // if the possible jump left is an opponent's piece and the move right is open
     if(gameBoard[jumpRow][jumpLeft] === enemyChecker && gameBoard[moveRow][moveRight] === 0) {
         $(`div[row = ${moveRow}][col = ${moveRight}]`).addClass("highLight");   
@@ -335,12 +306,10 @@ function checkIfJumpIsValid(){
     }
     //if the possible jump left and jump right are occupied
     if(gameBoard[jumpRow][jumpLeft] === enemyChecker && gameBoard[jumpRow][jumpRight] === enemyChecker) {
-
     }
 }
 
 function incrementScore () {
-    debugger;
     if(currentPlayer) {
         if (specialJump) {
             whichJumpOccurred(gameBoard[moveToRow][moveToColumn]);
@@ -378,14 +347,11 @@ function whichJumpOccurred( squareChosen ){
     } else if( squareChosen === gameBoard[reverseJumpRowKing][reverseJumpLeftKing]){
         reverseJumpLeftOccured === true;
     }
-
 }
 
 
 
 function normalMovements() {
-    debugger;
-
     // if the move left is open and the jump is off the board
     if (gameBoard[moveRow][moveLeft] === 0 && gameBoard[jumpRow] === undefined) {
         $(`div[row = ${moveRow}][col = ${moveLeft}]`).addClass("highLight");  
@@ -396,13 +362,6 @@ function normalMovements() {
         $(`div[row = ${moveRow}][col = ${moveRight}]`).addClass("highLight");  
         return; 
     }
-    // if 2 enemies behind you and the jump is open
-    // if( selectedChecker ===  gameBoard[reverseRowKing][reverseMoveLeftKing] === enemyChecker && gameBoard[reverseRowKing][reverseMoveRightKing] === enemyChecker && gameBoard[reverseJumpRowKing][reverseJumpLeftKing] === 0 && gameBoard[reverseJumpRowKing][reverseJumpRightKing] === 0) {
-    //     $(`div[row = ${reverseJumpRowKing}][col = ${reverseJumpLeftKing}]`).addClass("highLight"); 
-    //     $(`div[row = ${reverseJumpRowKing}][col = ${reverseJumpRightKing}]`).addClass("highLight");
-    //     reverseSpecialJump = true;
-    // }
-
     // if 2 enemys block adajcent squares and both jumps are open
     if( gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRow][moveRight] === enemyChecker && gameBoard[jumpRow][jumpLeft] === 0 && gameBoard[jumpRow][jumpLeft] === 0) {
         $(`div[row = ${jumpRow}][col = ${jumpLeft}]`).addClass("highLight"); 
@@ -410,28 +369,23 @@ function normalMovements() {
         specialJump = true;
         return;
     }
-
     if (gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRow][moveRight] === enemyChecker && gameBoard[jumpRow][jumpLeft] !== 0 && gameBoard[jumpRow][jumpRight]=== 0) {
         $(`div[row = ${jumpRow}][col = ${jumpRight}]`).addClass("highLight");
         jumpRightOccurred = true;
         return;
     }
-
-  
     //if the possible move left is occupied by a friendly piece and the right is an enemy piece
-    
-
     if ( gameBoard[moveRow][moveLeft] === friendlyChecker && gameBoard[moveRow][moveRight] === enemyChecker && gameBoard[jumpRow][jumpRight] === 0) {
         $(`div[row = ${jumpRow}][col = ${jumpRight}]`).addClass("highLight");
         jumpRightOccurred = true;
         return;
     }
-      if ( gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRow][moveRight] === friendlyChecker && gameBoard[jumpRow][jumpLeft] !== 0) {
+    if ( gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRow][moveRight] === friendlyChecker && gameBoard[jumpRow][jumpLeft] !== 0) {
           selectedChecker = null;
           return;
       }  
-      // if the move right is an friendy and move left is a enemy
-      if ( gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRow][moveRight] === friendlyChecker) {
+    // if the move right is an friendy and move left is a enemy
+    if ( gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRow][moveRight] === friendlyChecker) {
         $(`div[row = ${jumpRow}][col = ${jumpLeft}]`).addClass("highLight");
         jumpLeftOccurred = true;
         return;
@@ -440,8 +394,8 @@ function normalMovements() {
     if ( gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRow][moveRight] === friendlyChecker) {
         checkIfJumpIsValid();
         if(jumpIsValid){
-        $(`div[row = ${jumpRow}][col = ${jumpLeft}]`).addClass("highLight");
-        jumpLeftOccurred = true;
+            $(`div[row = ${jumpRow}][col = ${jumpLeft}]`).addClass("highLight");
+            jumpLeftOccurred = true;
         }
     }
     // if the move left is open and the move right is a friendly piece
@@ -463,9 +417,6 @@ function normalMovements() {
         $(`div[row = ${moveRow}][col = ${moveLeft}]`).addClass("highLight");  
         return;
     }
-
-
-
     // if there is an enemy piece in an adjacent square
     if ( gameBoard[moveRow][moveLeft] === 0 && gameBoard[moveRow][moveRight] === enemyChecker) {
         // highlight the square of the div to the left and the div 2 rows down and 2 columns to the right
@@ -473,31 +424,24 @@ function normalMovements() {
         //raise a flag that a jump to the right occurred
         jumpRightOccurred = true;
     }
-
     // if the move left is an enemy checker and the jump is occupied and the move right is open
     if ( gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRow][moveRight] === 0 && gameBoard[jumpRow][jumpLeft] !== 0 ) {
         $(`div[row = ${moveRow}][col = ${moveRight}]`).addClass("highLight");
         return;
     }
-
-
     // if the move left is an enemy checker and the move right is open
     if ( gameBoard[moveRow][moveLeft] === enemyChecker &&  gameBoard[moveRow][moveRight] === 0) {
         // highlight the square of the div to the right and the div 2 rows down and 2 columns to the left
         $(`div[row = ${jumpRow}][col = ${jumpLeft}]`).addClass("highLight");
         //raise a flag that a jump to the left occurred
         jumpLeftOccurred = true;
-        }
+    }
     //if both available moves are do not contain an opponents piece then add the class of highlight to both divs
     else if ( gameBoard[moveRow][moveLeft] === 0 && gameBoard[moveRow][moveRight] === 0  ) {
         $(`div[row = ${moveRow}][col = ${moveLeft}]`).addClass("highLight");
         $(`div[row= ${moveRow}][col = ${moveRight}]`).addClass("highLight");
     } 
 }
-
-
-
-
 
 function repopulateChecker(){
         // loop through the gameBoard array
@@ -507,20 +451,20 @@ function repopulateChecker(){
                 // if the gameBoard value at the outerloop index and innerloop index is a 1 the append a checker with the class of player1
                 switch(gameBoard[i][j]) {
                     case 1:
-                    var checker = $('<div>').addClass('checker player1');
-                    $(`div[row = ${i}][col= ${j}]`).append(checker);
+                        var checker = $('<div>').addClass('checker player1');
+                        $(`div[row = ${i}][col= ${j}]`).append(checker);
                     break;
                     case 2:
-                    var checker = $('<div>').addClass('checker player2');
-                    $(`div[row = ${i}][col= ${j}]`).append(checker);
+                        var checker = $('<div>').addClass('checker player2');
+                        $(`div[row = ${i}][col= ${j}]`).append(checker);
                     break;
                     case 3:
-                    var king = $('<div>').addClass('checker player1 king1');
-                    $(`div[row = ${i}][col= ${j}]`).append(king);
+                        var king = $('<div>').addClass('checker player1 king1');
+                        $(`div[row = ${i}][col= ${j}]`).append(king);
                     break;
                     case 4:
-                    var king = $('<div>').addClass('checker player2 king2');
-                    $(`div[row = ${i}][col= ${j}]`).append(king);
+                        var king = $('<div>').addClass('checker player2 king2');
+                        $(`div[row = ${i}][col= ${j}]`).append(king);
                     break;
                 }
             } 
@@ -531,11 +475,9 @@ deselectOpponentCheckers();
 
 function whichCheckerToPopulate( player) {
     if(player === 1) {
-        debugger;
         if( moveRow === 7 && selectedChecker === 1) {
             gameBoard[moveToRow][moveToColumn] = 3;
             return;
-            //if player 2 and the row moved to is the opponent's side then create a king
         } else if (selectedChecker === 3){
             gameBoard[moveToRow][moveToColumn] = 3;
             return;
@@ -553,11 +495,7 @@ function whichCheckerToPopulate( player) {
             gameBoard[moveToRow][moveToColumn] = 2;
         } 
     }
-
 }
-
-
-
 
 function resetGame() {
     // set the gameBoard to the original status
@@ -584,16 +522,13 @@ function resetGame() {
 
 
 function selectPiece(){
-    debugger;
     // has a div has not been clicked
     if(!selectedChecker){
-        
         var currentChecker = this;
         //get the numeric value of the div's row attribute that was clicked
         currentRow = parseInt($(currentChecker).attr('row'));
         //get the numeric value of the div's col attribute that was clicked
         currentColumn = parseInt($(currentChecker).attr('col'));
-       
         selectedChecker = gameBoard[currentRow][currentColumn];
         // check who the current player is, and what possible moves they will have
         // directionOfPlayerMovements( currentPlayer , selectedChecker );
