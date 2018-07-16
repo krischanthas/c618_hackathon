@@ -22,7 +22,7 @@ function applyHandlers(){
         hasClicked = false ;
         resetGame();           
     });  
-    $(".shadow").on('click', removeModal);       
+     
 }
 
 var hasClicked = false;
@@ -337,22 +337,23 @@ function incrementScore () {
 }
 
 function whichJumpOccurred( squareChosen ){
-    debugger;
     if (squareChosen === gameBoard[jumpRow][jumpLeft]){
         jumpLeftOccurred=true;
     } else if( squareChosen === gameBoard[jumpRow][jumpRight]){
         jumpRightOccurred=true;
-    } else if( squareChosen === gameBoard[reverseJumpRowKing][reverseJumpRightKing]){
-        reverseJumpRightOccured === true;
-    } else if( squareChosen === gameBoard[reverseJumpRowKing][reverseJumpLeftKing]){
-        reverseJumpLeftOccured === true;
     }
 }
 
 
 
 function normalMovements() {
-    // if the move left is open and the jump is off the board
+      //if both available moves are do not contain an opponents piece then add the class of highlight to both divs
+    if ( gameBoard[moveRow][moveLeft] === 0 && gameBoard[moveRow][moveRight] === 0  ) {
+        $(`div[row = ${moveRow}][col = ${moveLeft}]`).addClass("highLight");
+        $(`div[row= ${moveRow}][col = ${moveRight}]`).addClass("highLight");
+        return;
+    } 
+    // if the move left is open and the jump right is off the board
     if (gameBoard[moveRow][moveLeft] === 0 && gameBoard[jumpRow] === undefined) {
         $(`div[row = ${moveRow}][col = ${moveLeft}]`).addClass("highLight");  
         return; 
@@ -362,13 +363,25 @@ function normalMovements() {
         $(`div[row = ${moveRow}][col = ${moveRight}]`).addClass("highLight");  
         return; 
     }
+    // if the jumpleft is off the board and the jump is off the board
+    if (gameBoard[moveRow][moveLeft] === 0 && gameBoard[jumpRow] === undefined) {
+        $(`div[row = ${moveRow}][col = ${moveLeft}]`).addClass("highLight");  
+        return; 
+    }
+    // if 2 enemies adjacent and the jump left is open and jump right is blocked
+    if(gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRow][moveRight]=== enemyChecker && gameBoard[jumpRow][jumpLeft]=== 0 && gameBoard[jumpRow][jumpRight] !==0) {
+        $(`div[row = ${jumpRow}][col = ${jumpLeft}]`).addClass("highLight");
+        jumpLeftOccurred = true;
+        return;
+    }
     // if 2 enemys block adajcent squares and both jumps are open
-    if( gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRow][moveRight] === enemyChecker && gameBoard[jumpRow][jumpLeft] === 0 && gameBoard[jumpRow][jumpLeft] === 0) {
+    if( gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRow][moveRight] === enemyChecker && gameBoard[jumpRow][jumpLeft] === 0 && gameBoard[jumpRow][jumpRight] === 0) {
         $(`div[row = ${jumpRow}][col = ${jumpLeft}]`).addClass("highLight"); 
         $(`div[row = ${jumpRow}][col = ${jumpRight}]`).addClass("highLight");
         specialJump = true;
         return;
     }
+    // if the move left is occupied by and enemy and the move right is an enemy checker 
     if (gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRow][moveRight] === enemyChecker && gameBoard[jumpRow][jumpLeft] !== 0 && gameBoard[jumpRow][jumpRight]=== 0) {
         $(`div[row = ${jumpRow}][col = ${jumpRight}]`).addClass("highLight");
         jumpRightOccurred = true;
@@ -436,11 +449,6 @@ function normalMovements() {
         //raise a flag that a jump to the left occurred
         jumpLeftOccurred = true;
     }
-    //if both available moves are do not contain an opponents piece then add the class of highlight to both divs
-    else if ( gameBoard[moveRow][moveLeft] === 0 && gameBoard[moveRow][moveRight] === 0  ) {
-        $(`div[row = ${moveRow}][col = ${moveLeft}]`).addClass("highLight");
-        $(`div[row= ${moveRow}][col = ${moveRight}]`).addClass("highLight");
-    } 
 }
 
 function repopulateChecker(){
@@ -509,6 +517,8 @@ function resetGame() {
         [0,2,0,2,0,2,0,2],
         [2,0,2,0,2,0,2,0],
     ];
+    player1Score = 0;
+    player2Score = 0;
     // remove all the children div's (checkers) from the divs with the class of square
     $('.square').empty();
     // clear any existing highlights before checkers are repopulated
@@ -575,6 +585,7 @@ function selectPiece(){
             $('.square').empty();
             removeHighlights();
             selectedChecker = null;
+            specialJump = false;
             jumpRightOccurred = false;
             jumpLeftOccurred = false;
             jumpIsValid = false;
