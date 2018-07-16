@@ -22,7 +22,7 @@ function applyHandlers(){
         hasClicked = false ;
         resetGame();           
     });  
-    $(".shadow").on('click', removeModal);       
+     
 }
 
 var hasClicked = false;
@@ -83,9 +83,9 @@ var gameBoard = [
     [1,0,1,0,1,0,1,0],
     [0,1,0,1,0,1,0,1],
     [0,0,0,0,0,0,0,0],
-    [0,0,0,0,0,0,0,0],
+    [0,0,0,1,0,0,0,0],
     [2,0,2,0,2,0,2,0],
-    [0,2,0,2,0,2,0,2],
+    [0,1,0,2,0,0,0,2],
     [2,0,2,0,2,0,2,0],
   ];
 
@@ -284,6 +284,7 @@ function checkBoardEdge() {
 }
 
 function checkIfJumpIsValid(){
+    debugger;
     // if the possible jump left is an opponent's piece and the move right is open
     if(gameBoard[jumpRow][jumpLeft] === enemyChecker && gameBoard[moveRow][moveRight] === 0) {
         $(`div[row = ${moveRow}][col = ${moveRight}]`).addClass("highLight");   
@@ -310,6 +311,7 @@ function checkIfJumpIsValid(){
 }
 
 function incrementScore () {
+    debugger;
     if(currentPlayer) {
         if (specialJump) {
             whichJumpOccurred(gameBoard[moveToRow][moveToColumn]);
@@ -349,6 +351,12 @@ function whichJumpOccurred( squareChosen ){
 
 function normalMovements() {
     debugger;
+      //if both available moves are do not contain an opponents piece then add the class of highlight to both divs
+    if ( gameBoard[moveRow][moveLeft] === 0 && gameBoard[moveRow][moveRight] === 0  ) {
+        $(`div[row = ${moveRow}][col = ${moveLeft}]`).addClass("highLight");
+        $(`div[row= ${moveRow}][col = ${moveRight}]`).addClass("highLight");
+        return;
+    } 
     // if the move left is open and the jump right is off the board
     if (gameBoard[moveRow][moveLeft] === 0 && gameBoard[jumpRow] === undefined) {
         $(`div[row = ${moveRow}][col = ${moveLeft}]`).addClass("highLight");  
@@ -364,14 +372,22 @@ function normalMovements() {
         $(`div[row = ${moveRow}][col = ${moveLeft}]`).addClass("highLight");  
         return; 
     }
-    
+    // if 2 enemies adjacent and the jump left is open and jump right is blocked
+    if(gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRow][moveRight]=== enemyChecker && gameBoard[jumpRow][jumpLeft]=== 0 && gameBoard[jumpRow][jumpRight] !==0) {
+        $(`div[row = ${jumpRow}][col = ${jumpLeft}]`).addClass("highLight");
+        jumpLeftOccurred = true;
+        return;
+    }
+
+
     // if 2 enemys block adajcent squares and both jumps are open
-    if( gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRow][moveRight] === enemyChecker && gameBoard[jumpRow][jumpLeft] === 0 && gameBoard[jumpRow][jumpLeft] === 0) {
+    if( gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRow][moveRight] === enemyChecker && gameBoard[jumpRow][jumpLeft] === 0 && gameBoard[jumpRow][jumpRight] === 0) {
         $(`div[row = ${jumpRow}][col = ${jumpLeft}]`).addClass("highLight"); 
         $(`div[row = ${jumpRow}][col = ${jumpRight}]`).addClass("highLight");
         specialJump = true;
         return;
     }
+    // if the move left is occupied by and enemy and the move right is an enemy checker 
     if (gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRow][moveRight] === enemyChecker && gameBoard[jumpRow][jumpLeft] !== 0 && gameBoard[jumpRow][jumpRight]=== 0) {
         $(`div[row = ${jumpRow}][col = ${jumpRight}]`).addClass("highLight");
         jumpRightOccurred = true;
@@ -439,11 +455,6 @@ function normalMovements() {
         //raise a flag that a jump to the left occurred
         jumpLeftOccurred = true;
     }
-    //if both available moves are do not contain an opponents piece then add the class of highlight to both divs
-    else if ( gameBoard[moveRow][moveLeft] === 0 && gameBoard[moveRow][moveRight] === 0  ) {
-        $(`div[row = ${moveRow}][col = ${moveLeft}]`).addClass("highLight");
-        $(`div[row= ${moveRow}][col = ${moveRight}]`).addClass("highLight");
-    } 
 }
 
 function repopulateChecker(){
@@ -580,6 +591,7 @@ function selectPiece(){
             $('.square').empty();
             removeHighlights();
             selectedChecker = null;
+            specialJump = false;
             jumpRightOccurred = false;
             jumpLeftOccurred = false;
             jumpIsValid = false;
