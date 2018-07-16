@@ -342,17 +342,14 @@ function whichJumpOccurred( squareChosen ){
         jumpLeftOccurred=true;
     } else if( squareChosen === gameBoard[jumpRow][jumpRight]){
         jumpRightOccurred=true;
-    } else if( squareChosen === gameBoard[reverseJumpRowKing][reverseJumpRightKing]){
-        reverseJumpRightOccured === true;
-    } else if( squareChosen === gameBoard[reverseJumpRowKing][reverseJumpLeftKing]){
-        reverseJumpLeftOccured === true;
     }
 }
 
 
 
 function normalMovements() {
-    // if the move left is open and the jump is off the board
+    debugger;
+    // if the move left is open and the jump right is off the board
     if (gameBoard[moveRow][moveLeft] === 0 && gameBoard[jumpRow] === undefined) {
         $(`div[row = ${moveRow}][col = ${moveLeft}]`).addClass("highLight");  
         return; 
@@ -362,6 +359,12 @@ function normalMovements() {
         $(`div[row = ${moveRow}][col = ${moveRight}]`).addClass("highLight");  
         return; 
     }
+       // if the jumpleft is off the board and the jump is off the board
+       if (gameBoard[moveRow][moveLeft] === 0 && gameBoard[jumpRow] === undefined) {
+        $(`div[row = ${moveRow}][col = ${moveLeft}]`).addClass("highLight");  
+        return; 
+    }
+    
     // if 2 enemys block adajcent squares and both jumps are open
     if( gameBoard[moveRow][moveLeft] === enemyChecker && gameBoard[moveRow][moveRight] === enemyChecker && gameBoard[jumpRow][jumpLeft] === 0 && gameBoard[jumpRow][jumpLeft] === 0) {
         $(`div[row = ${jumpRow}][col = ${jumpLeft}]`).addClass("highLight"); 
@@ -509,6 +512,8 @@ function resetGame() {
         [0,2,0,2,0,2,0,2],
         [2,0,2,0,2,0,2,0],
     ];
+    player1Score = 0;
+    player2Score = 0;
     // remove all the children div's (checkers) from the divs with the class of square
     $('.square').empty();
     // clear any existing highlights before checkers are repopulated
