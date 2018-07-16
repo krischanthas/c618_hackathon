@@ -3,6 +3,8 @@
 *{
     margin: 0;
     box-sizing: border-box;
+    font-family: "Permanent Marker", cursive;
+    text-shadow: 4px 4px 2px black;
 }
 
 body {
@@ -10,43 +12,41 @@ body {
 }
 
 .container {
-    width: 100vw;
+    width: 100%;
     height: 100vh;
-    border: 1px black solid;
-    position: absolute;
 }
 
 .gameTitle {
-    font-size: 55px;
-    padding-top: 1.75%;
+    font-size: 7vmin;
+    padding-top: 2%;
     text-align: center;
     color: beige;
-    font-family: 'Diplomata SC', cursive;
-    background-position: relative;
 }
 
 .rulesTitle {
     position: relative;
-    top: 1%;
-    margin: 0% 0% 7% 0%;
     color: beige;
-    font-family: 'Diplomata SC', cursive;
     text-align: center;
-    font-size: xx-large;
 }
 
 .gameHeader {
-    width: 100%;
+    width: 74%;
     height: 15%;
     border-bottom: 2px solid black;
     background: linear-gradient(black, saddlebrown);
-    overflow: hidden;
+    display: inline-block;
+    vertical-align: top;
 }
 
 .boardContainer{
-    width: 100%;
+    width: 74%;
     height: 85%;
-    display: inline-block;
+    position: relative;
+    float:right;
+    bottom:85%;
+    background-image: url("Images/saloon.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .statsArea {
@@ -54,11 +54,10 @@ body {
     height: 100%;
     border-right: 2px solid black;
     display: inline-block;
-    vertical-align: top;
-    font-size: 1rem;
     position: relative;
     padding: 0% 1% 0% 1%;
     background: linear-gradient(saddlebrown, black);
+    overflow:auto;
 }
 
 button {
@@ -67,129 +66,199 @@ button {
     height: 8%;
     margin: 5% 0% 5% 0%;
     background: radial-gradient(grey, beige);
-    font-size: larger;
-    box-shadow: 0 5px 13px 10px rgba(0,0,0,5), 3px 10px 15px 10px rgba(0,0,0,10);
-    border-radius: 6px;
-    font-family: 'Diplomata SC', cursive;
+    font-size: 3vmin;
+    box-shadow: 0 5px 13px 10px rgba(0,0,0,5);
+    border-radius: 4%;
+    text-shadow: 1px 1px white;
 }
 
 .startGame {
-    margin: 0% 7% 0% 5%;
+   position: relative;
+   left: 10%;
+}
+.resetButton {
+    position: relative;
+    left: 16%
 }
 
 .rulesText {
-    font-family: 'Diplomata SC', cursive;
     color: beige;
-    font-size: 11px;
+    font-size: 2vmin;
     text-align: center;
 }
+
 
 .player1Score, .player2Score {
     position: relative;
     top: 1%;
-    margin: 0% 0% 6% 0%;
-    font-size: x-large;
+    margin-bottom: 2%;
+    text-align: center;
+    font-size: 3vmin;
     color: beige;
-    font-family: 'Diplomata SC', cursive;
 }
 
 .player1Score {
-    color: indianred;
+    color:  darkgray;
 }
 
 .player2Score {
-    color: darkgray;
-}
-
-.playArea {
-    width: 74%;
-    height: 100%;
-    border-top: none;
-    display: inline-block;
-    position: relative;
-    background: linear-gradient(saddlebrown, black);
-    background-image: url("Images/western.jpg");
-    background-image: contain;
-    background-repeat: no-repeat;
-   
+    color: indianred
 }
 
 .gameBoarder {
-    width: 45%;
-    height: 90%;
+    width: 70%;
+    height: 95%;
     position: relative;
-    display: flex;
-    justify-content: center;
-    left: 47%;
+    left: 50%;
     top:50%;
     transform: translate( -50%, -50%);
+    background-image: url("Images/gradingwood.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    box-shadow: 0 10px 18px 15px rgba(0,0,0,5), 10px 12px 22px 10px rgba(0,0,0,10);
+    border-radius: 5%;
 }
 
-#gameArea{
+#checkerBoard{
     width: 100%;
     height: 100%;
     position: relative;
     left: 50%;
-    top: 50%;
+    top: 56%;
     transform:translate(-50%,-50%);
-    padding-top: 17%;
-    padding-right: 1%;
-    border-radius: 20px;
-    box-shadow: 0 10px 18px 15px rgba(0,0,0,5), 10px 12px 22px 10px rgba(0,0,0,10);
-    background-image: url("Images/gradingwood.jpeg");
-    background-size: cover;
-    background-repeat: no-repeat;
-
+    
 }
 
 .row {
-    display: flex;
-    justify-content: center;
+    position:relative;
+    left: 7.5%;
 }
 
 .square {
     display: inline-block;
-    width: 63px;
-    height: 63px;
-    border: 1px solid black;
+    width: 10.5%;
+    height: 9vmin;
     border-radius: 2px;
 }
 
 .light {
-    background: radial-gradient(beige, whitesmoke);
+    
+    background: radial-gradient(tan, whitesmoke);
+    
 }
 
 
 .dark {
-    background: radial-gradient(grey, black);
+    
+     background: radial-gradient(brown, black);
 }
 
 .checker {
-    width: 49px;
-    height: 49px;
-    border-radius: 20px;
-    margin-top: 10%;
-    margin-left: 10%;
+    width: 100%;
+    height: 100%;
+    left:6%;
     position: relative;
     background-image: url("Images/copperCoinChecker.png");
     background-size: contain;
+    background-repeat: no-repeat;
 }
 
 
 .player1{
     background-image: url("Images/white_checker.png");
-    background-size: contain;
-    width: 55px;
-    height: 55px;
-    margin-top: 5%;
-    margin-left: 5%;
 }
 
 .highLight {
-    border: 2px yellow solid;
+    border: 3px yellow inset;
 
 }
-.king{
-    background-color: gold;
+.king1{
+    background-image: url("Images/Greek_coin_tetradrachme_panathenaic_games-3.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+.king2{
+    background-image: url("Images/gold-guinea-front-400x400.png");
+    background-size: contain;
+    background-repeat: no-repeat;    
 }
 
+
+.blackScreen {
+    position: fixed;
+    top:0;
+    left:0;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    background-color: rgba(0,0,0,.5);
+}
+
+.show {
+    display:block;
+}
+
+.winner {
+    font-size: 5vmin;
+    text-align: center;
+}
+
+.rainbowText{
+    animation:colorchange 20s infinite alternate;
+}
+
+@keyframes colorchange {
+    0% {
+      
+      color: blue;
+    }
+    
+    10% {
+      
+      color: #8e44ad;
+    }
+    
+    20% {
+      
+      color: #1abc9c;
+    }
+    
+    30% {
+      
+      color: #d35400;
+    }
+    
+    40% {
+      
+      color: blue;
+    }
+    
+    50% {
+      
+      color: #34495e;
+    }
+    
+    60% {
+      
+      color: blue;
+    }
+    
+    70% {
+      
+      color: #2980b9;
+    }
+    80% {
+   
+      color: #f1c40f;
+    }
+    
+    90% {
+   
+      color: #2980b9;
+    }
+    
+    100% {
+      
+      color: pink;
+    }
+  }
